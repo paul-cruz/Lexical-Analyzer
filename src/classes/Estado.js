@@ -1,10 +1,10 @@
 class Estado{
     static contadorIdEstado = 0;
     constructor(){
-        EdoAcept = false;
-        Token = -1;
-        IdEstado = contadorIdEstado++;
-        Trans.clear();
+        this.EdoAceptEdoAcept = false;
+        this.Token = -1;
+        this.IdEstado = contadorIdEstado++;
+        this.Trans.clear();
     }
 
     setEdoAcept(e){

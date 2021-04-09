@@ -15,23 +15,23 @@ class Transicion{
     }
 
     setTransicion(s1, s2, e){
-        simbinf = s1;
-        simbsup = s2;
-        edo = e;
+        this.simbinf = s1;
+        this.simbsup = s2;
+        this.edo = e;
     }
 
     setTransicion(s1, e){
-        simbinf = s1;
-        simbsup = s1;
-        edo = e;
+        this.simbinf = s1;
+        this.simbsup = s1;
+        this.edo = e;
     }
 
     getSimbinf(){
-        return simbinf;
+        return this.simbinf;
     }
 
     getSimbsup(){
-        return simbsup;
+        return this.simbsup;
     }
 
     setSimbinf(s1){
@@ -43,8 +43,8 @@ class Transicion{
     }
 
     getEdoTrans(s){
-        if(simbinf <= s && s <= simbsup){
-            return edo;
+        if(this.simbinf <= s && s <= this.simbsup){
+            return this.edo;
         }
         return null;
     }
