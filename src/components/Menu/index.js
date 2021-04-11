@@ -42,6 +42,42 @@ export default function Menu({ automata, onAutomataChange }) {
                 onChooseDialog('AddBasic');
                 setOpenDialog(true);
                 break;
+            case "Join":
+                onChooseDialog("Join");
+                setOpenDialog(true);
+                break;
+            case "Concat":
+                onChooseDialog("Concat");
+                setOpenDialog(true);
+                break;
+            case "Positive Closure":
+                onChooseDialog("Positive Closure");
+                setOpenDialog(true);
+                break;
+            case "Klenee Closure":
+                onChooseDialog("Klenee Closure");
+                setOpenDialog(true);
+                break;
+            case "Once or none":
+                onChooseDialog("Once or none");
+                setOpenDialog(true);
+                break;
+            case "Union for lexical analyzer":
+                onChooseDialog("Union for lexical analyzer");
+                setOpenDialog(true);
+                break;
+            case "Convert NFA to DFA":
+                onChooseDialog("Convert NFA to DFA");
+                setOpenDialog(true);
+                break;
+            case "Analyze string":
+                onChooseDialog("Analyze string");
+                setOpenDialog(true);
+                break;
+            case "Test lexical analyzer":
+                onChooseDialog("Test lexical analyzer");
+                setOpenDialog(true);
+                break;
             default:
                 break;
         }
