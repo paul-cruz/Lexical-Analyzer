@@ -4,22 +4,22 @@ export default class Estado {
         this.EdoAcept = false;
         this.Token = -1;
         this.IdEstado = this.contadorIdEstado++;
-        this.Trans.clear();
+        this.Trans = new Set();
     }
 
-    set EdoAcept(e) {
+    EdoAcept(e) {
         this.EdoAcept = e;
     }
 
-    set Token(t) {
+    Token(t) {
         this.Token = t;
     }
 
-    set IdEstado(id) {
+    IdEstado(id) {
         this.IdEstado = id;
     }
 
-    set Trans(tr) {
+    Trans(tr) {
         this.Trans = tr;
     }
 }

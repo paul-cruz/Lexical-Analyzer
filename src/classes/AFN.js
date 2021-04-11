@@ -1,6 +1,7 @@
 import Estado from './Estado';
 import Transicion from './Transicion';
 import SimbolosEspeciales from './SimbolosEspeciales';
+import AnalizadorLexico  from './Class4';   //AFD
 
 class Stack {
     constructor(){
@@ -12,7 +13,7 @@ class Stack {
     }
     
     pop(){
-        if (this.items.length == 0)
+        if (this.items.length === 0)
             return "Underflow"; 
         return this.items.pop();
     }
@@ -43,7 +44,7 @@ class ConjIj{
             this.ConjIj = new Set();
             this.ConjIj.clear();
         }
-        this.TransicionesAFD = new Array[cardAlf+1];
+        this.TransicionesAFD = new Array(cardAlf+1);
         for(var k = 0; k < cardAlf ; k++){
             this.TransicionesAFD[k] = -1;
         }
@@ -53,16 +54,13 @@ class ConjIj{
 
 class AFN{
     static ContIdAFN = 0;
-    static ConjDeAFNs = Set();
+    static ConjDeAFNs = new Set();
     constructor(){
-        this.IdAFN = ContIdAFN++;
+        this.IdAFN = this.ContIdAFN++;
         this.EdoIni = null;
-        this.EdosAFN = set();
-        this.EdosAFN = clear();
-        this.Alfabeto = set();
-        this.Alfabeto = clear();
-        this.EdosAcept = set();
-        this.EdosAcept = clear();
+        this.EdosAFN = new Set();
+        this.Alfabeto = new Set();
+        this.EdosAcept = new Set();
     }
 
     CrearAFNBasico(s){
@@ -80,14 +78,15 @@ class AFN{
         return this;
     }
 
-    CrearAFNBasico(s1, s2){
+    CrearAFNBasicoParams(s1, s2){
         var i;
-        var t = new Transicion(s1, s2, e2);
         var e1 = new Estado();
         var e2 = new Estado();
+        var t = new Transicion(s1, s2, e2);
+        
         e1.Trans.add(t);
         e2.EdoAcept = true;
-        for(var i = 0 ; i <= s2 ; i++){
+        for(i = 0 ; i <= s2 ; i++){
            this.Alfabeto.add(i); 
         }
         this.EdoIni = e1;
@@ -112,7 +111,7 @@ class AFN{
         });
 
         f2.EdosAcept.forEach(edo=>{
-            edo.Trans.add(new Trancision(SimbolosEspeciales.EPSILON, e2));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e2));
             edo.EdoAcept = false;
         });
 
@@ -166,11 +165,12 @@ class AFN{
         var aux, Edo;
         R.clear();
         S.push(e);
-        while(S.items.length != 0){
+        while(S.items.length !== 0){
             aux = S.pop();
             R.add(aux);
             aux.Trans.forEach(trans=>{
-                if((Edo = trans.GetEdoTrans(SimbolosEspeciales.EPSILON)) != null){
+                Edo = trans.GetEdoTrans(SimbolosEspeciales.EPSILON);
+                if(Edo != null){
                     if(!R.has(Edo)){
                         S.push(Edo);
                     }
@@ -181,8 +181,8 @@ class AFN{
     }
 
     opcional(){
-        e_ini = new Estado();
-        e_fin = new Estado();
+        var e_ini = new Estado();
+        var e_fin = new Estado();
 
         e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
         e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
@@ -204,13 +204,13 @@ class AFN{
     }
 
     Mover(Edo, Simb){
-        C = new Set();
-        aux;
+        var C = new Set();
+        var aux;
 
         C.clear();
         Edo.Trans.forEach(t => {
             aux = t.GetEdoTrans(Simb);
-            if(Aux != null){
+            if(aux != null){
                 C.add(aux);
             }
         });
@@ -219,8 +219,8 @@ class AFN{
     }
 
     MoverMas(Edos, Simb){
-        C = new Set();
-        aux;
+        var C = new Set();
+        var aux;
         C.clear();
         Edos.forEach(Edo => {
             Edo.Trans(t => {
@@ -235,9 +235,9 @@ class AFN{
     }
 
     Ir_A(Edos, Simb){
-        C = new Set();
+        var C = new Set();
         C.clear();
-        C = this.cerraduraEpsilon(MoverMas(Edos, Simb));
+        C = this.cerraduraEpsilon(this.MoverMas(Edos, Simb));
         return C;
     }
 
@@ -252,7 +252,7 @@ class AFN{
             this.EdosAFN.add(e);
             this.SeAgregoAFNUnionLexico = true;
         } else 
-            this.EdoIni.Trans.add(new Trancision(SimbolosEspeciales.EPSILON, f.EdoIni));
+            this.EdoIni.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
         
         f.EdosAcept.forEach(EdoAcep => {
             EdoAcep.Token = Token;
@@ -266,7 +266,7 @@ class AFN{
     IndiceCaracter(ArregloAlfabeto, c){
         var i;
         for(i = 0 ; i < ArregloAlfabeto.size() ; i++){
-            if(ArregloAlfabeto[i] == c){
+            if(ArregloAlfabeto[i] === c){
                 return i;
             }
         }
@@ -275,14 +275,14 @@ class AFN{
 
     ConvAFNaAFD(){
         var CardAlfabeto;
-        var i,j,r;
+        var i,j;
         var ArrAlfabeto;
         var Ij, Ik;
         var existe;
         var ConjAux = new Set();
         var EdosAFD = new Set();
         var EdosSinAnalizar = new Queue();
-
+        var banderaBreak = false;
         EdosAFD.clear();
         CardAlfabeto = this.Alfabeto.count();
         ArrAlfabeto = new Array(CardAlfabeto);
@@ -297,21 +297,25 @@ class AFN{
         EdosAFD.add(Ij);
         EdosSinAnalizar.enqueue(Ij);
         j++;
-        while(EdosSinAnalizar.count != 0){
+        while(EdosSinAnalizar.count !== 0){
             Ij = EdosSinAnalizar.dequeue();
             ArrAlfabeto.forEach(c => {
                 Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjI, c));
-                if(Ik.ConjI.count == 0){
-                    continue;
+                if(Ik.ConjI.count === 0){
+                    return;
                 }
                 existe = false;
                 this.EdosAFN.forEach(I => {
                     if(I.ConjI.equals(Ik.ConjI)){
-                        existe = true;
-                        Ik.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
-                        break;
+                        if(banderaBreak !== true){
+                            existe = true;
+                            Ik.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
+                            //break; ->cambiando este break con una bander para terminar
+                            banderaBreak = true;
+                        }
                     }
                 });
+                banderaBreak = false;
                 if(!existe){
                     Ik.j = j;
                     EdosAFD.add(Ik);
@@ -326,16 +330,20 @@ class AFN{
             ConjAux.clear();
             ConjAux = new Set([...ConjAux, ...I.ConjI]);
             ConjAux = new Set([...ConjAux].filter(i => I.ConjI.has(i)));
-            if(ConjAux.size != 0){
+            if(ConjAux.size !== 0){
                 ConjAux.forEach(EdoAcept=>{
-                    I.TransicionesAFD[CardAlfabeto] = EdoAcept.Token;
-                    break;
+                    if(banderaBreak !== true){
+                        I.TransicionesAFD[CardAlfabeto] = EdoAcept.Token;
+                        //break; -> Cambiando este break
+                        banderaBreak = true;
+                    }
                 });
+                banderaBreak = false;
             } else {
                 I.TransicionesAFD[CardAlfabeto] = -1;   
             }
         });
-        var AutFD = new AFD(CardAlfabeto);
+        var AutFD = AnalizadorLexico.AFD; //AFD
         i = 0;
         ArrAlfabeto.forEach(c => {
             AutFD.ArrAlfabeto[i++] = c;
@@ -343,10 +351,12 @@ class AFN{
         AutFD.TransicionesAFD = new Array(j).fill(0).map(() => new Array(CardAlfabeto).fill(0));
         EdosAFD.forEach(I => {
             for(var columna = 0 ; columna <= CardAlfabeto ; columna++){
-                AutFD.TransicionesAFD[I.j, columna] = I.TransicionesAFD[columna];
+                AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];
             }
         });
 
         return AutFD;
     }
 }
+
+export default AFN;

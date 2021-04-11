@@ -10,3 +10,5 @@ var AnalizadorLexico = {
     }
 
 }
+
+export default AnalizadorLexico;
