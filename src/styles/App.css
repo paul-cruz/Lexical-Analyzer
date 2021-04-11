@@ -1,11 +1,16 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  overflow: hidden;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   font-size: calc(10px + 2vmin);
+}
+
+.App-List {
+  height: 90vh;
 }
 
 /* .App-header {
