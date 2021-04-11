@@ -18,11 +18,11 @@ class Transicion {
         this.edo = e;
     }
 
-    getsimbInf() {
+    get simbInf() {
         return this.simbInf;
     }
 
-    getsimbSup() {
+    get simbSup() {
         return this.simbSup;
     }
 
