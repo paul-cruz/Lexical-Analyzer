@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
+    const classes = useStyles();
     return (
         <div
             role="tabpanel"
@@ -18,8 +18,8 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
+                <Box p={1}>
+                    <Typography><pre>{children}</pre></Typography>
                 </Box>
             )}
         </div>
@@ -48,17 +48,66 @@ const useStyles = makeStyles((theme) => ({
         height: '90vh',
     },
     tabs: {
+        width: "50%",
         borderRight: `1px solid ${theme.palette.divider}`,
     },
+    childrenText: {
+        whiteSpace: "nowrap"
+    }
 }));
 
-export default function AutomataList() {
+export default function AutomataList({automata, onAutomataChange}) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    const convertJSON = (jsonContent) => {
+        const infoJson = {edoIni: null, edosAcept: [], transiciones: {}, alfabeto: []};
+        Object.keys(jsonContent).forEach((key)=>{
+            switch(key){
+                case "EdoIni":  //inicial
+                    infoJson.edoIni = jsonContent[key].IdEstado;
+                    break;
+                case "EdosAcept":   //Edos de acept
+                        jsonContent[key].forEach(edo=>{
+                            infoJson.edosAcept.push(edo.IdEstado);
+                        });
+                    break;
+                case "EdosAFN":     //Trancisiones de estados
+                        jsonContent[key].forEach(trans=>{
+                            trans.Trans.forEach(transicion=>{
+                                const simbInf = transicion.__simbInf__;
+                                const simbSup = transicion.__simbSup__;
+                                const edoTrans = transicion.__edo__.IdEstado;
+
+                                if(simbInf === simbSup){  //Mismo simbolo
+                                    if(infoJson.transiciones[trans.IdEstado]){  //Ya tiene una transicion
+                                        infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                    } else {    //se agrega la primera transicion
+                                        infoJson.transiciones[trans.IdEstado] = [];
+                                        infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                    }
+                                } else {    //Rango de simbolos
+
+                                }
+                            });
+                        });
+                    break;
+                case "Alfabeto":       //Alfabeto del AFN
+                    jsonContent[key].forEach(symbol=>{
+                        infoJson.alfabeto.push(symbol);
+                    });
+                    break;
+                default:
+                    break;
+            }
+        });
+        console.log(JSON.stringify(infoJson, null, 2));
+        return JSON.stringify(infoJson, null, 2);
+    }
 
     return (
         <div className={classes.root}>
@@ -70,35 +119,20 @@ export default function AutomataList() {
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
             >
-                <Tab label="Item One" {...a11yProps(0)} />
-                <Tab label="Item Two" {...a11yProps(1)} />
-                <Tab label="Item Three" {...a11yProps(2)} />
-                <Tab label="Item Four" {...a11yProps(3)} />
-                <Tab label="Item Five" {...a11yProps(4)} />
-                <Tab label="Item Six" {...a11yProps(5)} />
-                <Tab label="Item Seven" {...a11yProps(6)} />
+                {
+                    Object.keys(automata).map(auto=>(
+                        <Tab label={auto} {...a11yProps(0)} />
+                    ))
+                }
             </Tabs>
-            <TabPanel value={value} index={0}>
-                Item One
-      </TabPanel>
-            <TabPanel value={value} index={1}>
-                Item Two
-      </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
-      </TabPanel>
-            <TabPanel value={value} index={3}>
-                Item Four
-      </TabPanel>
-            <TabPanel value={value} index={4}>
-                Item Five
-      </TabPanel>
-            <TabPanel value={value} index={5}>
-                Item Six
-      </TabPanel>
-            <TabPanel value={value} index={6}>
-                Item Seven
-      </TabPanel>
+            
+            {
+                Object.keys(automata).map((auto, index)=>(
+                    <TabPanel value={value} index={index}>
+                        {convertJSON(automata[auto])}
+                    </TabPanel>
+                ))
+            }
         </div>
     );
 }

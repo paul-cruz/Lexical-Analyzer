@@ -32,7 +32,7 @@ export default function App() {
         spacing={1}
         className={classes.grid}>
         <Grid item xs={4} >
-          <AutomataList />
+          <AutomataList automata={automata} onAutomataChange={setAutomata} />
         </Grid>
         <Grid item xs={8} className={classes.graphPaper} >
           <AutomataGraphs />
