@@ -52,11 +52,18 @@ class ConjIj{
 
 }
 
+function countIdAfn(){
+    if(typeof countIdAfn.counter == "undefined"){
+        countIdAfn.counter = 0;
+    }
+    return countIdAfn.counter++;
+}
+
 class AFN{
-    static ContIdAFN = 0;
+    //static countIdAfn = 0;
     static ConjDeAFNs = new Set();
     constructor(){
-        this.IdAFN = this.ContIdAFN++;
+        this.IdAFN = countIdAfn();
         this.EdoIni = null;
         this.EdosAFN = new Set();
         this.Alfabeto = new Set();
@@ -86,8 +93,8 @@ class AFN{
         
         e1.Trans.add(t);
         e2.EdoAcept = true;
-        for(i = 0 ; i <= s2 ; i++){
-           this.Alfabeto.add(i); 
+        for(i = s1.charCodeAt(0); i < s2.charCodeAt(0); i++){
+            this.Alfabeto.add(String.fromCharCode(i));
         }
         this.EdoIni = e1;
         this.EdosAFN.add(e1);
