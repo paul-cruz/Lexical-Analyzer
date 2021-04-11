@@ -25,7 +25,7 @@ export const menuOptions = [{
     label: 'Kleene Closure',
     icon: <StarOutlineOutlinedIcon />
 },{
-    label: 'Optional',
+    label: 'Once or none',
     icon: <PortableWifiOffOutlinedIcon />
 },{
     label: 'Union for lexical analyzer',
