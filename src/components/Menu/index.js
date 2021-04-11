@@ -16,6 +16,7 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
     root: {
+        height: '10vh',
         width: '100%',
         backgroundColor: '#39507E',
         color: '#FFFFFF'
