@@ -5,7 +5,8 @@ import Menu from './../components/Menu';
 export default function App() {
   return (
     <div className="App">
-      <Menu />
+      <header className="App-header"><Menu /></header>
+
     </div>
   );
 }
