@@ -18,9 +18,13 @@ export default function App() {
   const classes = useStyles();
   const [automata, setAutomata] = React.useState({});
 
+  React.useEffect(() => {
+    console.log(automata);
+  });
+
   return (
     <div className="App">
-      <header className="App-header"><Menu automata={automata} onAutomataChange={setAutomata}/></header>
+      <header className="App-header"><Menu automata={automata} onAutomataChange={setAutomata} /></header>
       <Grid container
         direction="row"
         justify="flex-start"

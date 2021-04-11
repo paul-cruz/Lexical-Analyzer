@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import AFN from './../../../classes/AFN';
+import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from "@material-ui/core/InputLabel";
+import { makeStyles } from '@material-ui/core/styles';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Select from '@material-ui/core/Select';
-import InputLabel from "@material-ui/core/InputLabel";
-import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
+import { Input } from '@material-ui/core';
 
 const useStyles = makeStyles({
     formInput: {
@@ -18,21 +20,34 @@ const useStyles = makeStyles({
     }
 });
 
-export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog}) {
+export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog }) {
     const classes = useStyles();
+    const [name, setName] = React.useState('');
+    const [symbol, setSymbol] = React.useState('');
 
     const forms = {
         'AddBasic': <DialogContent>
             <DialogContentText>
-                Select a symbol for a NFA
+                Enter name and symbol for a NFA
             </DialogContentText>
             <TextField
                 className={classes.formInput}
                 autoFocus
                 margin="dense"
                 id="name"
-                label="Symbol"
+                label="Name"
+                defaultValue={name}
+                onChange={(e) => { setName(e.target.value) }}
                 fullWidth
+            />
+            <TextField
+                className={classes.formInput}
+                margin="dense"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+                id="symbol"
+                label="Symbol"
             />
         </DialogContent>,
         'Join': <DialogContent>
@@ -154,7 +169,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         </DialogContent>,
         'Analyze string': <DialogContent>
             <DialogContentText>
-                Introduce a string to analyze it 
+                Introduce a string to analyze it
             </DialogContentText>
             <TextField
                 className={classes.formInput}
@@ -182,7 +197,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setSelectedForm(forms[keyForm]);
     }, [keyForm]);
 
@@ -191,12 +206,20 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         setDialog(null);
     };
 
-    const handleForm = () => {
+    const handleForm = (e) => {
         setOpen(false);
         setDialog(null);
 
         switch (keyForm) {
-            case "Add Basic":
+            case "AddBasic":
+                const newAFN = new AFN();
+                if (symbol.includes('-')) {
+                    var range = symbol.split('-');
+                    newAFN.CrearAFNBasicoParams(range[0], range[1]);
+                } else {
+                    newAFN.CrearAFNBasico(symbol);
+                }
+                onAutomataChange({ ...automata, [name]: newAFN });
                 break;
             case "Join":
                 break;
@@ -224,7 +247,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     return (
         <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Action</DialogTitle>
+                <DialogTitle id="form-dialog-title">{keyForm}</DialogTitle>
                 {selectedForm ? selectedForm : null}
                 <DialogActions>
                     <Button onClick={handleClose} >
