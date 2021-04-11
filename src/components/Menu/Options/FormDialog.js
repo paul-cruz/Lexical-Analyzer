@@ -149,6 +149,10 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
 
+    useEffect(()=>{
+        setSelectedForm(forms[keyForm]);
+    }, [keyForm]);
+
     const handleClose = () => {
         setOpen(false);
         setDialog(null);
@@ -157,13 +161,38 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const handleForm = () => {
         setOpen(false);
         setDialog(null);
+
+        switch (keyForm) {
+            case "Add Basic":
+                break;
+            case "Join":
+                break;
+            case "Concat":
+                break;
+            case "Positive Closure":
+                break;
+            case "Kleene Closure":
+                break;
+            case "Once or none":
+                break;
+            case "Union for lexical analyzer":
+                break;
+            case "Convert NFA to DFA":
+                break;
+            case "Analyze string":
+                break;
+            case "Test lexical analyzer":
+                break;
+            default:
+                break;
+        }
     };
 
     return (
         <div>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">Action</DialogTitle>
-                {selectedForm}
+                {selectedForm ? selectedForm : null}
                 <DialogActions>
                     <Button onClick={handleClose} >
                         Cancel
