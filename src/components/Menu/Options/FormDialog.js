@@ -7,8 +7,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
+import InputLabel from "@material-ui/core/InputLabel";
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+
+const useStyles = makeStyles({
+    formInput: {
+        marginTop: "1rem",
+        marginBottom: "1rem"
+    }
+});
 
 export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog}) {
+    const classes = useStyles();
 
     const forms = {
         'AddBasic': <DialogContent>
@@ -16,6 +27,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 Select a symbol for a NFA
             </DialogContentText>
             <TextField
+                className={classes.formInput}
                 autoFocus
                 margin="dense"
                 id="name"
@@ -27,105 +39,125 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             <DialogContentText>
                 Select 2 NFAs to Join them
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA 1</InputLabel>
             <Select
-                autoFocus
-                margin="dense"
-                id="AFN1"
-                label="AFN 1"
-                fullWidth
-            />
-            <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN2"
-                label="AFN 2"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
+
+            <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN1"
+                fullWidth
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Concat': <DialogContent>
             <DialogContentText>
                 Select 2 NFAs to concatenate them
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA 1</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
+            <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN2"
-                label="AFN 2"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Positive Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Positive Closure
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Kleene Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Kleene Closure
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Once or none': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Once or none
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Union for lexical analyzer': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Union for lexical analyzer
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Convert NFA to DFA': <DialogContent>
             <DialogContentText>
                 Select an NFA to convert to DFA
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
             <Select
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="AFN1"
-                label="AFN 1"
                 fullWidth
-            />
+            >
+                <MenuItem value={null}>Select</MenuItem>
+            </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>
             <DialogContentText>
                 Introduce a string to analyze it 
             </DialogContentText>
             <TextField
+                className={classes.formInput}
                 autoFocus
                 margin="dense"
                 id="name"
@@ -138,11 +170,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 Test lexical analyzer
             </DialogContentText>
             <TextField
-                autoFocus
+                className={classes.formInput}
                 margin="dense"
                 id="name"
                 label="Test"
                 fullWidth
+
             />
         </DialogContent>,
     };
