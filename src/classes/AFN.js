@@ -66,7 +66,7 @@ class AFN{
     CrearAFNBasico(s){
         var e1 = new Estado();
         var e2 = new Estado();
-        var t = new Transicion(s, e2);
+        var t = new Transicion(s, undefined, e2);
         e1.Trans.add(t);
         e2.EdoAcept = true;
         this.Alfabeto.add(s);
