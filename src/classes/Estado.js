@@ -1,25 +1,25 @@
 export default class Estado {
     static contadorIdEstado = 0;
     constructor() {
-        this.EdoAceptEdoAcept = false;
+        this.EdoAcept = false;
         this.Token = -1;
         this.IdEstado = this.contadorIdEstado++;
         this.Trans.clear();
     }
 
-    setEdoAcept(e) {
+    set EdoAcept(e) {
         this.EdoAcept = e;
     }
 
-    setToken(t) {
+    set Token(t) {
         this.Token = t;
     }
 
-    setIdEstado(id) {
+    set IdEstado(id) {
         this.IdEstado = id;
     }
 
-    setTrans(tr) {
+    set Trans(tr) {
         this.Trans = tr;
     }
 }
