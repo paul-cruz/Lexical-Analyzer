@@ -32,51 +32,51 @@ export default function Menu({ automata, onAutomataChange }) {
     const [dialog, setDialog] = React.useState(null);
 
     const onChooseDialog = (key) => {
-        setDialog(<FormDialog open={openDialog} setOpen={setOpenDialog} keyForm={key} automata={automata} onAutomataChange={onAutomataChange} />);
+        setDialog(<FormDialog open={openDialog} setDialog={setDialog} setOpen={setOpenDialog} keyForm={key} automata={automata} onAutomataChange={onAutomataChange} />);
     }
 
     const handleOption = (event, newValue) => {
         setValue(newValue);
         switch (menuOptions[newValue].label) {
             case "Add Basic":
-                onChooseDialog('AddBasic');
                 setOpenDialog(true);
+                onChooseDialog('AddBasic');
                 break;
             case "Join":
-                onChooseDialog("Join");
                 setOpenDialog(true);
+                onChooseDialog("Join");
                 break;
             case "Concat":
-                onChooseDialog("Concat");
                 setOpenDialog(true);
+                onChooseDialog("Concat");
                 break;
             case "Positive Closure":
-                onChooseDialog("Positive Closure");
                 setOpenDialog(true);
+                onChooseDialog("Positive Closure");
                 break;
-            case "Klenee Closure":
-                onChooseDialog("Klenee Closure");
+            case "Kleene Closure":
+                onChooseDialog("Kleene Closure");
                 setOpenDialog(true);
                 break;
             case "Once or none":
-                onChooseDialog("Once or none");
                 setOpenDialog(true);
+                onChooseDialog("Once or none");
                 break;
             case "Union for lexical analyzer":
-                onChooseDialog("Union for lexical analyzer");
                 setOpenDialog(true);
+                onChooseDialog("Union for lexical analyzer");
                 break;
             case "Convert NFA to DFA":
-                onChooseDialog("Convert NFA to DFA");
                 setOpenDialog(true);
+                onChooseDialog("Convert NFA to DFA");
                 break;
             case "Analyze string":
-                onChooseDialog("Analyze string");
                 setOpenDialog(true);
+                onChooseDialog("Analyze string");
                 break;
             case "Test lexical analyzer":
-                onChooseDialog("Test lexical analyzer");
                 setOpenDialog(true);
+                onChooseDialog("Test lexical analyzer");
                 break;
             default:
                 break;
@@ -85,18 +85,20 @@ export default function Menu({ automata, onAutomataChange }) {
     }
 
     return (
+        
         <ThemeProvider theme={theme}>
-
             <BottomNavigation
                 value={value}
                 onChange={handleOption}
                 showLabels
                 className={classes.root}
             >
+                
                 {menuOptions.map((element, index) => {
                     return <BottomNavigationAction key={index} classes={classes} label={element.label} icon={element.icon} />;
                 })}
             </BottomNavigation>
+            {console.log(openDialog, dialog)}
             {dialog ? dialog : <div />}
         </ThemeProvider>
     );

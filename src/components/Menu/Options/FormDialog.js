@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,10 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Select from '@material-ui/core/Select';
 
-export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen }) {
+export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog}) {
 
     const forms = {
-        'div': <div />,
         'AddBasic': <DialogContent>
             <DialogContentText>
                 Select a symbol for a NFA
@@ -74,9 +73,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         </DialogContent>,
-        'Klenee Closure': <DialogContent>
+        'Kleene Closure': <DialogContent>
             <DialogContentText>
-                Select an NFA to apply Klenee Closure
+                Select an NFA to apply Kleene Closure
             </DialogContentText>
             <Select
                 autoFocus
@@ -152,10 +151,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     const handleClose = () => {
         setOpen(false);
+        setDialog(null);
     };
 
     const handleForm = () => {
         setOpen(false);
+        setDialog(null);
     };
 
     return (
@@ -164,10 +165,10 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 <DialogTitle id="form-dialog-title">Action</DialogTitle>
                 {selectedForm}
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose} >
                         Cancel
                     </Button>
-                    <Button onClick={handleForm} color="primary">
+                    <Button onClick={handleForm}>
                         Save
                     </Button>
                 </DialogActions>
