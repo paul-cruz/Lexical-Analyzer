@@ -1,12 +1,12 @@
 var AnalizadorLexico = {
     TransEdoAFD: {
-        IdEstado = 0,
-        TransAFD = []
+        IdEstado: 0,
+        TransAF: []
     }, //
     AFD: {
-        CardAlfabeto = 0,
-        ArrAlfabeto = [],
-        TransicionesAFD = [,]
+        CardAlfabeto: 0,
+        ArrAlfabeto: [],
+        TransicionesAFD: []
     }
 
 }

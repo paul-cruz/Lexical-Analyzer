@@ -1,4 +1,4 @@
-class SimbolosEspeciales{
-    EPSILON = String.fromCharCode(5);
-    FIN = String.fromCharCode(0);
-}
+export default function SimbolosEspeciales() {
+    this.EPSILON = String.fromCharCode(5);
+    this.FIN = String.fromCharCode(0);
+};

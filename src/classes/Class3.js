@@ -1,37 +1,39 @@
+import SimbolosEspeciales from './SimbolosEspeciales';
+
 class Stack {
-    constructor(){
+    constructor() {
         this.items = [];
     }
 
-    push(element){
+    push(element) {
         this.items.push(element);
     }
-    
-    pop(){
-        if (this.items.length == 0)
-            return "Underflow"; 
+
+    pop() {
+        if (this.items.length === 0)
+            return "Underflow";
         return this.items.pop();
     }
 }
 
-class Queue{
-    constructor(){
+class Queue {
+    constructor() {
         this.items = [];
     }
 
-    enqueue(element){    
+    enqueue(element) {
         this.items.push(element);
     }
 
-    dequeue(){
-        if(this.isEmpty())
+    dequeue() {
+        if (this.isEmpty())
             return "Underflow";
         return this.items.shift();
     }
 }
 
 var AnalizadorLexico = {
-    AnalizLexic: function(){
+    AnalizLexic: function () {
         this.CadenaSigma = "";
         this.PasoPorEdoAcept = false;
         this.IniLexema = this.FinLexema = -1;
@@ -40,16 +42,16 @@ var AnalizadorLexico = {
         this.Pila.clear();
         this.AutomataFD = null;
 
-        this.yylex = function(){
+        this.yylex = function () {
             this.Pila.push(this.CaracterActual);
-            if(this.CaracterActual > this.CadenaSigma.length)
+            if (this.CaracterActual > this.CadenaSigma.length)
                 return SimbolosEspeciales.FIN;
-            this.IniLexema = CaracterActual;
+            this.IniLexema = this.CaracterActual;
             return 1;
         }
     },
 
-    AnalizLexicPar: function(sigma, AutFD){
+    AnalizLexicPar: function (sigma, AutFD) {
         this.CadenaSigma = sigma;
         this.PasoPorEdoAcept = false;
         this.IniLexema = 0;
@@ -59,14 +61,13 @@ var AnalizadorLexico = {
         this.Pila.clear();
         this.AutomataFD = AutFD;
 
-        this.yylex = function(){
+        this.yylex = function () {
             this.Pila.push(this.CaracterActual);
-            if(this.CaracterActual > this.CadenaSigma.length)
+            if (this.CaracterActual > this.CadenaSigma.length)
                 return SimbolosEspeciales.FIN;
-            this.IniLexema = CaracterActual;
+            this.IniLexema = this.CaracterActual;
             return 1;
         }
     }
-
-
+    
 }

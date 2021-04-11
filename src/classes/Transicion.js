@@ -1,53 +1,44 @@
-class Transicion{
-    constructor(simb, edo){
-        this.simb = simb;
-        this.edo = edo;
+class Transicion {
+
+    constructor(simbInf, simbSup, edo) {
+        this.simbInf = simbInf ? simbInf : null;
+        this.simbSup = simbSup ? simbSup : this.simbInf;
+        this.edo = edo ? edo : null;
     }
 
-    constructor(simbinf, simbsup, edo){
-        this.simbinf = simbinf;
-        this.simbsup = simbsup;
-        this.edo = edo;
-    }
-
-    constructor(){
-        this.edo = null;
-    }
-
-    setTransicion(s1, s2, e){
-        this.simbinf = s1;
-        this.simbsup = s2;
+    setRangeTransition(s1, s2, e) {
+        this.simbInf = s1;
+        this.simbSup = s2;
         this.edo = e;
     }
 
-    setTransicion(s1, e){
-        this.simbinf = s1;
-        this.simbsup = s1;
+    setUniqueTransition(s1, e) {
+        this.simbInf = s1;
+        this.simbSup = s1;
         this.edo = e;
     }
 
-    getSimbinf(){
-        return this.simbinf;
+    getsimbInf() {
+        return this.simbInf;
     }
 
-    getSimbsup(){
-        return this.simbsup;
+    getsimbSup() {
+        return this.simbSup;
     }
 
-    setSimbinf(s1){
-        this.setSimbinf = s1;
+    set simbInf(s1) {
+        this.setsimbInf = s1;
     }
 
-    setSimbsup(s1){
-        this.setSimbsup = s1;   
+    set simbSup(s1) {
+        this.setsimbSup = s1;
     }
 
-    getEdoTrans(s){
-        if(this.simbinf <= s && s <= this.simbsup){
+    getEdoTrans(s) {
+        if (this.simbInf <= s && s <= this.simbSup) {
             return this.edo;
         }
         return null;
     }
-
     
 }
