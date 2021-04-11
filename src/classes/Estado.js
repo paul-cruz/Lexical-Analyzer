@@ -1,9 +1,15 @@
+function contadorIdEstado(){
+    if(typeof contadorIdEstado.counter == "undefined"){
+        contadorIdEstado.counter = 0;
+    }
+    return contadorIdEstado.counter++;
+}
 export default class Estado {
-    static contadorIdEstado = 0;
+    //static contadorIdEstado = 0;
     constructor() {
         this.EdoAcept = false;
         this.Token = -1;
-        this.IdEstado = this.contadorIdEstado++;
+        this.IdEstado = contadorIdEstado();
         this.Trans = new Set();
     }
 
