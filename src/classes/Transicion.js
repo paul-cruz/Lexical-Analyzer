@@ -1,4 +1,4 @@
-class Transicion {
+export default class Transicion {
 
     constructor(simbInf, simbSup, edo) {
         this.simbInf = simbInf ? simbInf : null;
@@ -18,11 +18,11 @@ class Transicion {
         this.edo = e;
     }
 
-    getsimbInf() {
+    get simbInf() {
         return this.simbInf;
     }
 
-    getsimbSup() {
+    get simbSup() {
         return this.simbSup;
     }
 
@@ -42,3 +42,4 @@ class Transicion {
     }
     
 }
+

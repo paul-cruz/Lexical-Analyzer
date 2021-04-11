@@ -33,33 +33,18 @@ class Queue {
 }
 
 var AnalizadorLexico = {
-    AnalizLexic: function () {
-        this.CadenaSigma = "";
+    AnalizLexic: function (sigma, AutFD) {
+        
+        this.CadenaSigma = sigma ? sigma : "";
         this.PasoPorEdoAcept = false;
-        this.IniLexema = this.FinLexema = -1;
-        this.CaracterActual = -1;
-        this.token = -1;
-        this.Pila.clear();
-        this.AutomataFD = null;
-
-        this.yylex = function () {
-            this.Pila.push(this.CaracterActual);
-            if (this.CaracterActual > this.CadenaSigma.length)
-                return SimbolosEspeciales.FIN;
-            this.IniLexema = this.CaracterActual;
-            return 1;
-        }
-    },
-
-    AnalizLexicPar: function (sigma, AutFD) {
-        this.CadenaSigma = sigma;
-        this.PasoPorEdoAcept = false;
-        this.IniLexema = 0;
+        this.IniLexema = (sigma && AutAFD) ? 0: -1;
         this.FinLexema = -1;
+        this.CaracterActual = (sigma && AutAFD) ? 0: -1;
         this.CaracterActual = 0;
         this.token = -1;
+        this.Pila = new Stack();
         this.Pila.clear();
-        this.AutomataFD = AutFD;
+        this.AutomataFD = AutFD ? AutFD : null;
 
         this.yylex = function () {
             this.Pila.push(this.CaracterActual);

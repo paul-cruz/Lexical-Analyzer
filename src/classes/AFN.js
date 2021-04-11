@@ -1,3 +1,7 @@
+import Estado from './Estado';
+import Transicion from './Transicion';
+import SimbolosEspeciales from './SimbolosEspeciales';
+
 class Stack {
     constructor(){
         this.items = [];
@@ -31,33 +35,20 @@ class Queue{
 }
 
 class ConjIj{
-    constructor(cardAlf){
-        this.j = -1;
-        this.ConjIj = new Set();
-        this.ConjIj.clear();
-        this.TransicionesAFD = new Array[cardAlf+1];
-        for(var k = 0; k < cardAlf ; k++){
-            this.TransicionesAFD[k] = -1;
-        }
-    }
-
     constructor(cardAlf, conjIj, j){
-        this.j = j;
-        this.conjIj = conjIj;
+        this.j = j ? j: -1;
+        if(conjIj){
+            this.ConjIj = conjIj;
+        }else{
+            this.ConjIj = new Set();
+            this.ConjIj.clear();
+        }
         this.TransicionesAFD = new Array[cardAlf+1];
         for(var k = 0; k < cardAlf ; k++){
             this.TransicionesAFD[k] = -1;
         }
     }
 
-    constructor(cardAlf, conjIj){
-        this.j = -1;
-        this.conjIj = conjIj;
-        this.TransicionesAFD = new Array[cardAlf+1];
-        for(var k = 0; k < cardAlf ; k++){
-            this.TransicionesAFD[k] = -1;
-        }
-    }
 }
 
 class AFN{
