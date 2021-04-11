@@ -1,4 +1,4 @@
-class Transicion {
+export default class Transicion {
 
     constructor(simbInf, simbSup, edo) {
         this.simbInf = simbInf ? simbInf : null;
