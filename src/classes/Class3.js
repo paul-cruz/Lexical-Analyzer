@@ -1,5 +1,5 @@
-import SimbolosEspeciales from './SimbolosEspeciales';
-import AFD from './Class4';
+/*import SimbolosEspeciales from './SimbolosEspeciales';
+import AFD from './Class4';*/
 
 /*class Stack {
     constructor() {
@@ -50,16 +50,16 @@ var AnalizadorLexico = {
             this.IniLexema = 0;
             while(this.CaracterActual<this.CadenaSigma.length){
                 var indice = this.AutomataFD.TransicionesAFD[this.EstadoActual].indexOf(this.CadenaSigma.charAt(this.CaracterActual));
-                if(indice != -1){
+                if(indice !== -1){
                     this.EstadoActual = indice;
                     var tokAFD = this.AutomataFD.TransicionesAFD[this.AutomataFD.cardAlfabeto][indice]
-                    if(tokAFD != -1){
+                    if(tokAFD !== -1){
                         this.CaracterAcepPrevio = this.CaracterActual;
                         this.token = tokAFD;
                     }
                     this.CaracterActual++;
                 }else{
-                    if(this.PasoPorEdoAcept == false){
+                    if(this.PasoPorEdoAcept === false){
                         return -1;
                     }else{
                         this.FinLexema = this.CaracterAcepPrevio;

@@ -171,10 +171,10 @@ class AFN {
         var e_ini = new Estado();
         var e_fin = new Estado();
         e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON,undefined,e_fin));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
         this.EdosAcept.forEach(edo => {
             edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined,this.EdoIni));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
             edo.EdoAcept = false;
         });
         this.EdoIni = e_ini;
@@ -196,9 +196,9 @@ class AFN {
             aux = S.pop();
             R.add(aux);
             // eslint-disable-next-line
-            if(aux instanceof Set){
-                for(let trans of aux) {
-                    if(trans.Trans.size > 0){
+            if (aux instanceof Set) {
+                for (let trans of aux) {
+                    if (trans.Trans.size > 0) {
                         Edo = trans.Trans.getEdoTrans(SimbolosEspeciales.EPSILON);
                         if (Edo != null) {
                             if (!R.has(Edo)) {
@@ -208,7 +208,7 @@ class AFN {
                     }
                 };
             } else {
-                if(aux){
+                if (aux) {// eslint-disable-next-line
                     aux.Trans.forEach((trans) => {
                         Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
                         if (Edo != null) {
@@ -219,7 +219,7 @@ class AFN {
                     });
                 }
             }
-            
+
         }
         return R;
     }
@@ -266,28 +266,28 @@ class AFN {
         var C = new Set();
         var aux;
         C.clear();
-        for(let Edo of Edos) {
-            if(Edo == undefined){
+        for (let Edo of Edos) {
+            if (Edo === undefined) {
                 break;
             }
-            if(Edo instanceof Set){
+            if (Edo instanceof Set) {
                 console.log(Edo);
-                if(Edo.size < 1){
+                if (Edo.size < 1) {
                     return;
                 }
-                for(let trans of Edo){
+                for (let trans of Edo) {
                     Edo = trans;
                     break;
                 }
-            } else {
+            } else {// eslint-disable-next-line
                 Edo.Trans.forEach(t => {
                     aux = t.getEdoTrans(Simb);
                     if (aux != null) {
                         C.add(aux);
                     }
-                }); 
+                });
             }
-            
+
         };
 
         return C;
