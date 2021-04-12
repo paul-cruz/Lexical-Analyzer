@@ -107,7 +107,7 @@ class AFN {
     UnirAFN(f2) {
         var e1 = new Estado();
         var e2 = new Estado();
-        var t1 = new Transicion(SimbolosEspeciales.EPSILON, undefined, e2);
+        var t1 = new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni);
         var t2 = new Transicion(SimbolosEspeciales.EPSILON, undefined, f2.EdoIni);
         e1.Trans.add(t1);
         e1.Trans.add(t2);
@@ -141,7 +141,7 @@ class AFN {
                 edo.EdoAcept = false;
             });
         });
-        f2.EdosAFN.remove(f2.EdoIni);
+        f2.EdosAFN.delete(f2.EdoIni);
         this.EdosAcept = f2.EdosAcept;
         this.EdosAFN = new Set([...this.EdosAFN, ...f2.EdosAFN]);
         this.Alfabeto = new Set([...this.Alfabeto, ...f2.Alfabeto]);
@@ -152,10 +152,28 @@ class AFN {
     cerrPos() {
         var e_ini = new Estado();
         var e_fin = new Estado();
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
         this.EdosAcept.forEach(edo => {
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+            edo.EdoAcept = false;
+        });
+        this.EdoIni = e_ini;
+        e_fin.EdoAcept = true;
+        this.EdosAcept.clear();
+        this.EdosAcept.add(e_ini);
+        this.EdosAFN.add(e_fin);
+        return this;
+    }
+
+    cerrKleene() {
+        var e_ini = new Estado();
+        var e_fin = new Estado();
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON,undefined,e_fin));
+        this.EdosAcept.forEach(edo => {
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined,this.EdoIni));
             edo.EdoAcept = false;
         });
         this.EdoIni = e_ini;
@@ -192,11 +210,11 @@ class AFN {
         var e_ini = new Estado();
         var e_fin = new Estado();
 
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
 
         this.EdosAcept.forEach(e => {
-            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
+            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
             e.EdoAcept = false;
         });
 
@@ -255,12 +273,12 @@ class AFN {
             this.EdosAFN.clear();
             this.Alfabeto.clear();
             e = new Estado();
-            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
+            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, f.EdoIni));
             f.EdoIni = e;
             this.EdosAFN.add(e);
             this.SeAgregoAFNUnionLexico = true;
         } else
-            this.EdoIni.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
+            this.EdoIni.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, f.EdoIni));
 
         f.EdosAcept.forEach(EdoAcep => {
             EdoAcep.Token = Token;
