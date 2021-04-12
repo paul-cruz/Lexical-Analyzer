@@ -161,7 +161,8 @@ class AFN {
         this.EdoIni = e_ini;
         e_fin.EdoAcept = true;
         this.EdosAcept.clear();
-        this.EdosAcept.add(e_ini);
+        this.EdosAcept.add(e_fin);
+        this.EdosAFN.add(e_ini);
         this.EdosAFN.add(e_fin);
         return this;
     }
@@ -179,7 +180,8 @@ class AFN {
         this.EdoIni = e_ini;
         e_fin.EdoAcept = true;
         this.EdosAcept.clear();
-        this.EdosAcept.add(e_ini);
+        this.EdosAcept.add(e_fin);
+        this.EdosAFN.add(e_ini);
         this.EdosAFN.add(e_fin);
         return this;
     }
