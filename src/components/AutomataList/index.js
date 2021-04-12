@@ -79,19 +79,21 @@ export default function AutomataList({automata, onAutomataChange}) {
                 case "EdosAFN":     //Trancisiones de estados
                         jsonContent[key].forEach(trans=>{
                             trans.Trans.forEach(transicion=>{
-                                const simbInf = transicion.__simbInf__;
-                                const simbSup = transicion.__simbSup__;
-                                const edoTrans = transicion.__edo__.IdEstado;
+                                if(transicion){
+                                    const simbInf = transicion.__simbInf__;
+                                    const simbSup = transicion.__simbSup__;
+                                    const edoTrans = transicion.__edo__.IdEstado;
 
-                                if(simbInf === simbSup){  //Mismo simbolo
-                                    if(infoJson.transiciones[trans.IdEstado]){  //Ya tiene una transicion
-                                        infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
-                                    } else {    //se agrega la primera transicion
-                                        infoJson.transiciones[trans.IdEstado] = [];
-                                        infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                    if(simbInf === simbSup){  //Mismo simbolo
+                                        if(infoJson.transiciones[trans.IdEstado]){  //Ya tiene una transicion
+                                            infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                        } else {    //se agrega la primera transicion
+                                            infoJson.transiciones[trans.IdEstado] = [];
+                                            infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                        }
+                                    } else {    //Rango de simbolos
+
                                     }
-                                } else {    //Rango de simbolos
-
                                 }
                             });
                         });

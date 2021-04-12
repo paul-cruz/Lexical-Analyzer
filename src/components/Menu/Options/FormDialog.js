@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { Input } from '@material-ui/core';
+
 
 const useStyles = makeStyles({
     formInput: {
@@ -20,10 +20,30 @@ const useStyles = makeStyles({
     }
 });
 
+
+
 export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog }) {
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [symbol, setSymbol] = React.useState('');
+    const [selectedOption, setSelectedOption] = React.useState('');
+    const [selectedOption2, setSelectedOption2] = React.useState("");
+
+    const getAutomatas = () => (
+        Object.keys(automata).map(key=>(
+            <MenuItem value={key} name={key}>{key}</MenuItem>
+        ))
+    )
+
+    const selectedAFN = (event) => {
+        const key = event.target.value;
+        setSelectedOption(automata[key]);
+    }
+
+    const selectedAFN2 = (event) => {
+        const key = event.target.value;
+        setSelectedOption2(automata[key]);
+    }
 
     const forms = {
         'AddBasic': <DialogContent>
@@ -61,7 +81,6 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 id="AFN2"
                 fullWidth
             >
-                <MenuItem value={null}>Select</MenuItem>
             </Select>
 
             <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
@@ -135,8 +154,10 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                onChange={selectedAFN}
             >
                 <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
             </Select>
         </DialogContent>,
         'Union for lexical analyzer': <DialogContent>
@@ -149,9 +170,34 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                onChange={selectedAFN}
             >
                 <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
             </Select>
+
+            <InputLabel id="demo-simple-select-label">Union with</InputLabel>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN1"
+                fullWidth
+                onChange={selectedAFN2}
+            >
+                <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
+            </Select>
+
+            <TextField
+                className={classes.formInput}
+                autoFocus
+                margin="dense"
+                id="token"
+                label="Token"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+            />
         </DialogContent>,
         'Convert NFA to DFA': <DialogContent>
             <DialogContentText>
@@ -209,6 +255,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const handleForm = (e) => {
         setOpen(false);
         setDialog(null);
+        let nuevoAFN;
 
         switch (keyForm) {
             case "AddBasic":
@@ -230,8 +277,14 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             case "Kleene Closure":
                 break;
             case "Once or none":
+                nuevoAFN = selectedOption;
+                onAutomataChange({...automata, [selectedOption]: nuevoAFN.opcional()});
                 break;
             case "Union for lexical analyzer":
+                nuevoAFN = selectedOption;
+                console.log(selectedOption, selectedOption2, symbol);
+                //onAutomataChange({...automata, [selectedOption]: nuevoAFN.UnionEspecialAFNs()});
+                
                 break;
             case "Convert NFA to DFA":
                 break;
