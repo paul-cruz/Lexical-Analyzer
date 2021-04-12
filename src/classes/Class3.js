@@ -20,7 +20,7 @@ import AFD from './Class4';
 
 
 var AnalizadorLexico = {
-    AnalizLexic: function (sigma, AutFD) {
+    AnalizLexic: function (sigma, AutAFD) {
         
         this.CadenaSigma = sigma ? sigma : "";
         this.PasoPorEdoAcept = false;

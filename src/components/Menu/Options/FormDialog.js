@@ -26,6 +26,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const [NFA1, setNFA1] = React.useState('');
     const [NFA2, setNFA2] = React.useState('');
 
+    const getAutomatas = () => (
+        Object.keys(automata).map(key=>(
+            <MenuItem value={key} name={key}>{key}</MenuItem>
+        ))
+    );
+
     const forms = {
         'AddBasic': <DialogContent>
             <DialogContentText>
@@ -176,9 +182,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
             </Select>
         </DialogContent>,
         'Union for lexical analyzer': <DialogContent>
@@ -293,6 +302,8 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 }
                 break;
             case "Once or none":
+                const dest = automata[NFA1];
+                onAutomataChange({...automata, [NFA1]: dest.opcional()});
                 break;
             case "Union for lexical analyzer":
                 break;
