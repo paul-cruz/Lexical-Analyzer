@@ -55,12 +55,13 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AutomataList({ automata, onAutomataChange }) {
+export default function AutomataList({ automata, setSelectedAutomata }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        setSelectedAutomata(event.target.innerText);
     };
 
     const convertJSON = (jsonContent) => {
@@ -104,7 +105,7 @@ export default function AutomataList({ automata, onAutomataChange }) {
                     break;
             }
         });
-        console.log(JSON.stringify(infoJson, null, 2));
+        //console.log(JSON.stringify(infoJson, null, 2));
         return JSON.stringify(infoJson, null, 2);
     }
 

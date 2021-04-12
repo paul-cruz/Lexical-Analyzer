@@ -107,18 +107,18 @@ class AFN {
     UnirAFN(f2) {
         var e1 = new Estado();
         var e2 = new Estado();
-        var t1 = new Transicion(SimbolosEspeciales.EPSILON, e2);
-        var t2 = new Transicion(SimbolosEspeciales.EPSILON, f2.EdoIni);
+        var t1 = new Transicion(SimbolosEspeciales.EPSILON, undefined, e2);
+        var t2 = new Transicion(SimbolosEspeciales.EPSILON, undefined, f2.EdoIni);
         e1.Trans.add(t1);
         e1.Trans.add(t2);
 
         this.EdosAcept.forEach(edo => {
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e2));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e2));
             edo.EdoAcept = false;
         });
 
         f2.EdosAcept.forEach(edo => {
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e2));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e2));
             edo.EdoAcept = false;
         });
 
