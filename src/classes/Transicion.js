@@ -9,13 +9,13 @@ export default class Transicion {
     setRangeTransition(s1, s2, e) {
         this.__simbInf__ = s1;
         this.__simbSup__ = s2;
-        this.edo = e;
+        this.__edo__ = e;
     }
 
     setUniqueTransition(s1, e) {
         this.__simbInf__ = s1;
         this.__simbSup__ = s1;
-        this.edo = e;
+        this.__edo__ = e;
     }
 
     get simbInf() {
