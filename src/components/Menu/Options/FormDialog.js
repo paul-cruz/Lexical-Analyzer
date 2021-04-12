@@ -343,14 +343,14 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                         const dest = automata["AFNLex1"];
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
                         onAutomataChange({...automata, ["AFNLex1"]: dest})
-                        delete automata[NFA1];
+                        
                     } else {
                         const dest = new AFN();
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
-                        onAutomataChange({...automata, ["AFNLex1"]: dest})
-                        delete automata[NFA1];
+                        onAutomataChange({...automata, ["AFNLex1"]: dest});
                     }
-                    
+
+                    delete automata[NFA1];  //esta es la madre que deberia borrar el AFN 1 xd
                     break;
                 }
             case "Convert NFA to DFA":

@@ -197,9 +197,7 @@ class AFN {
             R.add(aux);
             // eslint-disable-next-line
             if(aux instanceof Set){
-                console.log("aux", aux);
                 for(let trans of aux) {
-                    console.log(trans.Trans);
                     if(trans.Trans.size > 0){
                         Edo = trans.Trans.getEdoTrans(SimbolosEspeciales.EPSILON);
                         if (Edo != null) {
@@ -210,14 +208,16 @@ class AFN {
                     }
                 };
             } else {
-                aux.Trans.forEach((trans) => {
-                    Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
-                    if (Edo != null) {
-                        if (!R.has(Edo)) {
-                            S.push(Edo);
+                if(aux){
+                    aux.Trans.forEach((trans) => {
+                        Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
+                        if (Edo != null) {
+                            if (!R.has(Edo)) {
+                                S.push(Edo);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
             
         }
@@ -267,13 +267,27 @@ class AFN {
         var aux;
         C.clear();
         for(let Edo of Edos) {
-            console.log(Edo);
-            Edo.Trans.forEach(t => {
-                aux = t.getEdoTrans(Simb);
-                if (aux != null) {
-                    C.add(aux);
+            if(Edo == undefined){
+                break;
+            }
+            if(Edo instanceof Set){
+                console.log(Edo);
+                if(Edo.size < 1){
+                    return;
                 }
-            });
+                for(let trans of Edo){
+                    Edo = trans;
+                    break;
+                }
+            } else {
+                Edo.Trans.forEach(t => {
+                    aux = t.getEdoTrans(Simb);
+                    if (aux != null) {
+                        C.add(aux);
+                    }
+                }); 
+            }
+            
         };
 
         return C;
@@ -347,14 +361,13 @@ class AFN {
             Ij = EdosSinAnalizar.dequeue();
             // eslint-disable-next-line
             ArrAlfabeto.forEach((c) => {
-                console.log(Ij);
                 Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjIj, c));
-                if (Ik.ConjI.count === 0) {
+                if (Ik.ConjIj.count === 0) {
                     return;
                 }
                 existe = false;
                 this.EdosAFN.forEach(I => {
-                    if (I.ConjI.equals(Ik.ConjI)) {
+                    if (Ij.ConjIj === Ik.ConjIj) {
                         if (banderaBreak !== true) {
                             existe = true;
                             Ik.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
@@ -376,8 +389,8 @@ class AFN {
 
         EdosAFD.forEach(I => {
             ConjAux.clear();
-            ConjAux = new Set([...ConjAux, ...I.ConjI]);
-            ConjAux = new Set([...ConjAux].filter(i => I.ConjI.has(i)));
+            ConjAux = new Set([...ConjAux, ...Ij.ConjIj]);
+            ConjAux = new Set([...ConjAux].filter(i => Ij.ConjIj.has(i)));
             if (ConjAux.size !== 0) {
                 ConjAux.forEach(EdoAcept => {
                     if (banderaBreak !== true) {

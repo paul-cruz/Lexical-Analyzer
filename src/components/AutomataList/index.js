@@ -94,7 +94,14 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
                                     infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
                                 }
                             } else {    //Rango de simbolos
-
+                                for (let i = simbInf.charCodeAt(0); i < simbSup.charCodeAt(0) + 1; i++) {
+                                    if (infoJson.transiciones[trans.IdEstado]) {  //Ya tiene una transicion
+                                        infoJson.transiciones[trans.IdEstado].push(`${String.fromCharCode(i)} -> ${edoTrans}`)
+                                    } else {    //se agrega la primera transicion
+                                        infoJson.transiciones[trans.IdEstado] = [];
+                                        infoJson.transiciones[trans.IdEstado].push(`${String.fromCharCode(i)} -> ${edoTrans}`)
+                                    }
+                                }
                             }
                         });
                     });
