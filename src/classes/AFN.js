@@ -196,15 +196,30 @@ class AFN {
             aux = S.pop();
             R.add(aux);
             // eslint-disable-next-line
-            aux.Trans.forEach((trans) => {
-                console.log(trans);
-                Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
-                if (Edo != null) {
-                    if (!R.has(Edo)) {
-                        S.push(Edo);
+            if(aux instanceof Set){
+                console.log("aux", aux);
+                for(let trans of aux) {
+                    console.log(trans.Trans);
+                    if(trans.Trans.size > 0){
+                        Edo = trans.Trans.getEdoTrans(SimbolosEspeciales.EPSILON);
+                        if (Edo != null) {
+                            if (!R.has(Edo)) {
+                                S.push(Edo);
+                            }
+                        }
                     }
-                }
-            });
+                };
+            } else {
+                aux.Trans.forEach((trans) => {
+                    Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
+                    if (Edo != null) {
+                        if (!R.has(Edo)) {
+                            S.push(Edo);
+                        }
+                    }
+                });
+            }
+            
         }
         return R;
     }
@@ -251,14 +266,15 @@ class AFN {
         var C = new Set();
         var aux;
         C.clear();
-        Edos.forEach(Edo => {
-            Edo.Trans(t => {
-                aux = t.GetEdoTrans(Simb);
+        for(let Edo of Edos) {
+            console.log(Edo);
+            Edo.Trans.forEach(t => {
+                aux = t.getEdoTrans(Simb);
                 if (aux != null) {
                     C.add(aux);
                 }
             });
-        });
+        };
 
         return C;
     }
@@ -331,7 +347,7 @@ class AFN {
             // eslint-disable-next-line
             ArrAlfabeto.forEach((c) => {
                 console.log(Ij);
-                Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjIj.entries, c));
+                Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjIj, c));
                 if (Ik.ConjI.count === 0) {
                     return;
                 }
