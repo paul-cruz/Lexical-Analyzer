@@ -268,6 +268,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (NFA1 !== NFA2) {
                     const dest = automata[NFA1];
                     dest.UnirAFN(automata[NFA2]);
+                    delete automata[NFA2];
                     onAutomataChange({ ...automata, [NFA1]: dest });
                 }
                 break;
@@ -275,6 +276,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (NFA1 !== NFA2) {
                     const dest = automata[NFA1];
                     dest.ConcAFN(automata[NFA2]);
+                    delete automata[NFA2];
                     onAutomataChange({ ...automata, [NFA1]: dest });
                 }
                 break;
