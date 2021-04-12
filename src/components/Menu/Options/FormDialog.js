@@ -28,7 +28,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const [NFA2, setNFA2] = React.useState('');
 
     const getAutomatas = () => (
-        Object.keys(automata).map(key=>(
+        Object.keys(automata).map(key => (
             <MenuItem value={key} name={key}>{key}</MenuItem>
         ))
     );
@@ -45,7 +45,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 id="name"
                 label="Name"
                 defaultValue={name}
-                onChange={(e) => { setName(e.target.value) }}
+                onChange={(e) => { setName(e.target.value.toUpperCase()) }}
                 fullWidth
             />
             <TextField
@@ -335,41 +335,41 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 break;
             case "Once or none":
                 const dest = automata[NFA1];
-                onAutomataChange({...automata, [NFA1]: dest.opcional()});
+                onAutomataChange({ ...automata, [NFA1]: dest.opcional() });
                 break;
             case "Union for lexical analyzer":
-                if(NFA1 && symbol){
-                    if(automata["AFNLex1"]){
+                if (NFA1 && symbol) {
+                    if (automata["AFNLex1"]) {
                         const dest = automata["AFNLex1"];
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
-                        onAutomataChange({...automata, ["AFNLex1"]: dest})
-                        
+                        onAutomataChange({ ...automata, "AFNLex1": dest })
+
                     } else {
                         const dest = new AFN();
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
-                        onAutomataChange({...automata, ["AFNLex1"]: dest});
+                        onAutomataChange({ ...automata, "AFNLex1": dest });
                     }
 
                     delete automata[NFA1];  //esta es la madre que deberia borrar el AFN 1 xd
-                    break;
                 }
+                break;
             case "Convert NFA to DFA":
-                if(NFA1){
+                if (NFA1) {
                     const dest = automata[NFA1];
                     console.log(dest.ConvAFNaAFD());
                 }
                 break;
             case "Analyze string":
-                if(symbol){
+                if (symbol) {
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
                     console.log(AnalizadorLexico.AnalizLexic(string2Analyze, dest).yylex());
-                    if(true){
+                    if (true) {
                         alert("It's a valid tring!");
                     } else {
                         alert("It's an invalid string!");
                     }
-                    
+
                 }
                 break;
             case "Test lexical analyzer":
