@@ -5,8 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { SignalCellularNull } from '@material-ui/icons';
-
 
 const theme = createMuiTheme({
     palette: {
@@ -84,7 +82,7 @@ export default function Menu({ automata, onAutomataChange }) {
     }
 
     return (
-        
+
         <ThemeProvider theme={theme}>
             <BottomNavigation
                 value={value}
@@ -92,7 +90,7 @@ export default function Menu({ automata, onAutomataChange }) {
                 showLabels
                 className={classes.root}
             >
-                
+
                 {menuOptions.map((element, index) => {
                     return <BottomNavigationAction key={index} classes={classes} label={element.label} icon={element.icon} />;
                 })}

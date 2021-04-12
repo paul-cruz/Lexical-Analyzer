@@ -11,7 +11,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { Input } from '@material-ui/core';
 
 const useStyles = makeStyles({
     formInput: {
@@ -199,6 +198,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     useEffect(() => {
         setSelectedForm(forms[keyForm]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyForm]);
 
     const handleClose = () => {
