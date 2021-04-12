@@ -1,68 +1,68 @@
 import Estado from './Estado';
 import Transicion from './Transicion';
 import SimbolosEspeciales from './SimbolosEspeciales';
-import AnalizadorLexico  from './Class4';   //AFD
+import AnalizadorLexico from './Class4';   //AFD
 
 class Stack {
-    constructor(){
+    constructor() {
         this.items = [];
     }
 
-    push(element){
+    push(element) {
         this.items.push(element);
     }
-    
-    pop(){
+
+    pop() {
         if (this.items.length === 0)
-            return "Underflow"; 
+            return "Underflow";
         return this.items.pop();
     }
 }
 
-class Queue{
-    constructor(){
+class Queue {
+    constructor() {
         this.items = [];
     }
 
-    enqueue(element){    
+    enqueue(element) {
         this.items.push(element);
     }
 
-    dequeue(){
-        if(this.isEmpty())
+    dequeue() {
+        if (this.isEmpty())
             return "Underflow";
         return this.items.shift();
     }
 }
 
-class ConjIj{
-    constructor(cardAlf, conjIj, j){
-        this.j = j ? j: -1;
-        if(conjIj){
+class ConjIj {
+    constructor(cardAlf, conjIj, j) {
+        this.j = j ? j : -1;
+        if (conjIj) {
             this.ConjIj = conjIj;
-        }else{
+        } else {
             this.ConjIj = new Set();
             this.ConjIj.clear();
         }
-        this.TransicionesAFD = new Array(cardAlf+1);
-        for(var k = 0; k < cardAlf ; k++){
+        this.TransicionesAFD = new Array(cardAlf + 1);
+        for (var k = 0; k < cardAlf; k++) {
             this.TransicionesAFD[k] = -1;
         }
     }
 
 }
 
-function countIdAfn(){
-    if(typeof countIdAfn.counter == "undefined"){
+function countIdAfn() {
+    if (typeof countIdAfn.counter == "undefined") {
         countIdAfn.counter = 0;
     }
     return countIdAfn.counter++;
 }
 
-class AFN{
+class AFN {
     //static countIdAfn = 0;
     static ConjDeAFNs = new Set();
-    constructor(){
+    constructor() {
         this.IdAFN = countIdAfn();
         this.EdoIni = null;
         this.EdosAFN = new Set();
@@ -70,7 +70,7 @@ class AFN{
         this.EdosAcept = new Set();
     }
 
-    CrearAFNBasico(s){
+    CrearAFNBasico(s) {
         var e1 = new Estado();
         var e2 = new Estado();
         var t = new Transicion(s, undefined, e2);
@@ -85,15 +85,15 @@ class AFN{
         return this;
     }
 
-    CrearAFNBasicoParams(s1, s2){
+    CrearAFNBasicoParams(s1, s2) {
         var i;
         var e1 = new Estado();
         var e2 = new Estado();
         var t = new Transicion(s1, s2, e2);
-        
+
         e1.Trans.add(t);
         e2.EdoAcept = true;
-        for(i = s1.charCodeAt(0); i < s2.charCodeAt(0); i++){
+        for (i = s1.charCodeAt(0); i < s2.charCodeAt(0); i++) {
             this.Alfabeto.add(String.fromCharCode(i));
         }
         this.EdoIni = e1;
@@ -104,21 +104,21 @@ class AFN{
         return this;
     }
 
-    UnirAFN(f2){
+    UnirAFN(f2) {
         var e1 = new Estado();
         var e2 = new Estado();
-        var t1 = new Transicion(SimbolosEspeciales.EPSILON, e2);
-        var t2 = new Transicion(SimbolosEspeciales.EPSILON, f2.EdoIni);
+        var t1 = new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni);
+        var t2 = new Transicion(SimbolosEspeciales.EPSILON, undefined, f2.EdoIni);
         e1.Trans.add(t1);
         e1.Trans.add(t2);
-        
+
         this.EdosAcept.forEach(edo => {
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e2));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e2));
             edo.EdoAcept = false;
         });
 
-        f2.EdosAcept.forEach(edo=>{
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e2));
+        f2.EdosAcept.forEach(edo => {
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e2));
             edo.EdoAcept = false;
         });
 
@@ -134,14 +134,14 @@ class AFN{
         return this;
     }
 
-    ConcAFN(f2){
-        f2.EdoIni.Trans.forEach(trans=>{
-            this.EdosAcept.forEach(edo=>{
+    ConcAFN(f2) {
+        f2.EdoIni.Trans.forEach(trans => {
+            this.EdosAcept.forEach(edo => {
                 edo.Trans.add(trans);
                 edo.EdoAcept = false;
             });
         });
-        f2.EdosAFN.remove(f2.EdoIni);
+        f2.EdosAFN.delete(f2.EdoIni);
         this.EdosAcept = f2.EdosAcept;
         this.EdosAFN = new Set([...this.EdosAFN, ...f2.EdosAFN]);
         this.Alfabeto = new Set([...this.Alfabeto, ...f2.Alfabeto]);
@@ -149,15 +149,15 @@ class AFN{
         return this;
     }
 
-    cerrPos(){
+    cerrPos() {
         var e_ini = new Estado();
         var e_fin = new Estado();
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON,this.EdoIni));
-        this.EdosAcept.forEach(edo=>{
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
-            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+        this.EdosAcept.forEach(edo => {
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
             edo.EdoAcept = false;
-        });  
+        });
         this.EdoIni = e_ini;
         e_fin.EdoAcept = true;
         this.EdosAcept.clear();
@@ -166,19 +166,38 @@ class AFN{
         return this;
     }
 
-    cerraduraEpsilon(e){
+    cerrKleene() {
+        var e_ini = new Estado();
+        var e_fin = new Estado();
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON,undefined,e_fin));
+        this.EdosAcept.forEach(edo => {
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
+            edo.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined,this.EdoIni));
+            edo.EdoAcept = false;
+        });
+        this.EdoIni = e_ini;
+        e_fin.EdoAcept = true;
+        this.EdosAcept.clear();
+        this.EdosAcept.add(e_ini);
+        this.EdosAFN.add(e_fin);
+        return this;
+    }
+
+    cerraduraEpsilon(e) {
         var R = new Set();
         var S = new Stack();
         var aux, Edo;
         R.clear();
         S.push(e);
-        while(S.items.length !== 0){
+        while (S.items.length !== 0) {
             aux = S.pop();
             R.add(aux);
-            aux.Trans.forEach(trans=>{
+            // eslint-disable-next-line
+            aux.Trans.forEach((trans) => {
                 Edo = trans.GetEdoTrans(SimbolosEspeciales.EPSILON);
-                if(Edo != null){
-                    if(!R.has(Edo)){
+                if (Edo != null) {
+                    if (!R.has(Edo)) {
                         S.push(Edo);
                     }
                 }
@@ -187,15 +206,15 @@ class AFN{
         return R;
     }
 
-    opcional(){
+    opcional() {
         var e_ini = new Estado();
         var e_fin = new Estado();
 
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, this.EdoIni));
-        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, this.EdoIni));
+        e_ini.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
 
-        this.EdosAcept.forEach(e=>{
-            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, e_fin));
+        this.EdosAcept.forEach(e => {
+            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, e_fin));
             e.EdoAcept = false;
         });
 
@@ -210,14 +229,14 @@ class AFN{
 
     }
 
-    Mover(Edo, Simb){
+    Mover(Edo, Simb) {
         var C = new Set();
         var aux;
 
         C.clear();
         Edo.Trans.forEach(t => {
             aux = t.GetEdoTrans(Simb);
-            if(aux != null){
+            if (aux != null) {
                 C.add(aux);
             }
         });
@@ -225,14 +244,14 @@ class AFN{
         return C;
     }
 
-    MoverMas(Edos, Simb){
+    MoverMas(Edos, Simb) {
         var C = new Set();
         var aux;
         C.clear();
         Edos.forEach(Edo => {
             Edo.Trans(t => {
                 aux = t.GetEdoTrans(Simb);
-                if(aux != null){
+                if (aux != null) {
                     C.add(aux);
                 }
             });
@@ -241,26 +260,26 @@ class AFN{
         return C;
     }
 
-    Ir_A(Edos, Simb){
+    Ir_A(Edos, Simb) {
         var C = new Set();
         C.clear();
         C = this.cerraduraEpsilon(this.MoverMas(Edos, Simb));
         return C;
     }
 
-    UnionEspecialAFNs(f, Token){
+    UnionEspecialAFNs(f, Token) {
         var e;
-        if(!this.SeAgregoAFNUnionLexico){
+        if (!this.SeAgregoAFNUnionLexico) {
             this.EdosAFN.clear();
             this.Alfabeto.clear();
             e = new Estado();
-            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
+            e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, f.EdoIni));
             f.EdoIni = e;
             this.EdosAFN.add(e);
             this.SeAgregoAFNUnionLexico = true;
-        } else 
-            this.EdoIni.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, f.EdoIni));
-        
+        } else
+            this.EdoIni.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, f.EdoIni));
+
         f.EdosAcept.forEach(EdoAcep => {
             EdoAcep.Token = Token;
         });
@@ -270,19 +289,19 @@ class AFN{
         this.Alfabeto = new Set([...this.Alfabeto, ...f.Alfabeto]);
     }
 
-    IndiceCaracter(ArregloAlfabeto, c){
+    IndiceCaracter(ArregloAlfabeto, c) {
         var i;
-        for(i = 0 ; i < ArregloAlfabeto.size() ; i++){
-            if(ArregloAlfabeto[i] === c){
+        for (i = 0; i < ArregloAlfabeto.size(); i++) {
+            if (ArregloAlfabeto[i] === c) {
                 return i;
             }
         }
         return -1;
     }
 
-    ConvAFNaAFD(){
+    ConvAFNaAFD() {
         var CardAlfabeto;
-        var i,j;
+        var i, j;
         var ArrAlfabeto;
         var Ij, Ik;
         var existe;
@@ -293,7 +312,7 @@ class AFN{
         EdosAFD.clear();
         CardAlfabeto = this.Alfabeto.count();
         ArrAlfabeto = new Array(CardAlfabeto);
-        i=0;
+        i = 0;
         this.Alfabeto.forEach(c => {
             ArrAlfabeto[i++] = c;
         });
@@ -304,17 +323,18 @@ class AFN{
         EdosAFD.add(Ij);
         EdosSinAnalizar.enqueue(Ij);
         j++;
-        while(EdosSinAnalizar.count !== 0){
+        while (EdosSinAnalizar.count !== 0) {
             Ij = EdosSinAnalizar.dequeue();
-            ArrAlfabeto.forEach(c => {
+            // eslint-disable-next-line
+            ArrAlfabeto.forEach((c) => {
                 Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjI, c));
-                if(Ik.ConjI.count === 0){
+                if (Ik.ConjI.count === 0) {
                     return;
                 }
                 existe = false;
                 this.EdosAFN.forEach(I => {
-                    if(I.ConjI.equals(Ik.ConjI)){
-                        if(banderaBreak !== true){
+                    if (I.ConjI.equals(Ik.ConjI)) {
+                        if (banderaBreak !== true) {
                             existe = true;
                             Ik.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
                             //break; ->cambiando este break con una bander para terminar
@@ -323,7 +343,7 @@ class AFN{
                     }
                 });
                 banderaBreak = false;
-                if(!existe){
+                if (!existe) {
                     Ik.j = j;
                     EdosAFD.add(Ik);
                     EdosSinAnalizar.enqueue(Ik);
@@ -337,9 +357,9 @@ class AFN{
             ConjAux.clear();
             ConjAux = new Set([...ConjAux, ...I.ConjI]);
             ConjAux = new Set([...ConjAux].filter(i => I.ConjI.has(i)));
-            if(ConjAux.size !== 0){
-                ConjAux.forEach(EdoAcept=>{
-                    if(banderaBreak !== true){
+            if (ConjAux.size !== 0) {
+                ConjAux.forEach(EdoAcept => {
+                    if (banderaBreak !== true) {
                         I.TransicionesAFD[CardAlfabeto] = EdoAcept.Token;
                         //break; -> Cambiando este break
                         banderaBreak = true;
@@ -347,7 +367,7 @@ class AFN{
                 });
                 banderaBreak = false;
             } else {
-                I.TransicionesAFD[CardAlfabeto] = -1;   
+                I.TransicionesAFD[CardAlfabeto] = -1;
             }
         });
         var AutFD = AnalizadorLexico.AFD; //AFD
@@ -357,7 +377,7 @@ class AFN{
         });
         AutFD.TransicionesAFD = new Array(j).fill(0).map(() => new Array(CardAlfabeto).fill(0));
         EdosAFD.forEach(I => {
-            for(var columna = 0 ; columna <= CardAlfabeto ; columna++){
+            for (var columna = 0; columna <= CardAlfabeto; columna++) {
                 AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];
             }
         });

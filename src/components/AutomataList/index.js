@@ -8,7 +8,6 @@ import Box from '@material-ui/core/Box';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-    const classes = useStyles();
     return (
         <div
             role="tabpanel"
@@ -56,50 +55,50 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function AutomataList({automata, onAutomataChange}) {
+export default function AutomataList({ automata, setSelectedAutomata }) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        setSelectedAutomata(event.target.innerText);
     };
 
     const convertJSON = (jsonContent) => {
-        const infoJson = {edoIni: null, edosAcept: [], transiciones: {}, alfabeto: []};
-        Object.keys(jsonContent).forEach((key)=>{
-            switch(key){
+        const infoJson = { edoIni: null, edosAcept: [], transiciones: {}, alfabeto: [] };
+        Object.keys(jsonContent).forEach((key) => {
+            switch (key) {
                 case "EdoIni":  //inicial
                     infoJson.edoIni = jsonContent[key].IdEstado;
                     break;
                 case "EdosAcept":   //Edos de acept
-                        jsonContent[key].forEach(edo=>{
-                            infoJson.edosAcept.push(edo.IdEstado);
-                        });
+                    jsonContent[key].forEach(edo => {
+                        infoJson.edosAcept.push(edo.IdEstado);
+                    });
                     break;
                 case "EdosAFN":     //Trancisiones de estados
-                        jsonContent[key].forEach(trans=>{
-                            trans.Trans.forEach(transicion=>{
-                                if(transicion){
-                                    const simbInf = transicion.__simbInf__;
-                                    const simbSup = transicion.__simbSup__;
-                                    const edoTrans = transicion.__edo__.IdEstado;
 
-                                    if(simbInf === simbSup){  //Mismo simbolo
-                                        if(infoJson.transiciones[trans.IdEstado]){  //Ya tiene una transicion
-                                            infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
-                                        } else {    //se agrega la primera transicion
-                                            infoJson.transiciones[trans.IdEstado] = [];
-                                            infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
-                                        }
-                                    } else {    //Rango de simbolos
+                    jsonContent[key].forEach(trans => {
+                        trans.Trans.forEach(transicion => {
+                            const simbInf = transicion.__simbInf__;
+                            const simbSup = transicion.__simbSup__;
+                            const edoTrans = transicion.__edo__.IdEstado;
 
-                                    }
+                            if (simbInf === simbSup) {  //Mismo simbolo
+                                if (infoJson.transiciones[trans.IdEstado]) {  //Ya tiene una transicion
+                                    infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
+                                } else {    //se agrega la primera transicion
+                                    infoJson.transiciones[trans.IdEstado] = [];
+                                    infoJson.transiciones[trans.IdEstado].push(`${simbSup} -> ${edoTrans}`)
                                 }
-                            });
+                            } else {    //Rango de simbolos
+
+                            }
                         });
+                    });
                     break;
                 case "Alfabeto":       //Alfabeto del AFN
-                    jsonContent[key].forEach(symbol=>{
+                    jsonContent[key].forEach(symbol => {
                         infoJson.alfabeto.push(symbol);
                     });
                     break;
@@ -107,7 +106,7 @@ export default function AutomataList({automata, onAutomataChange}) {
                     break;
             }
         });
-        console.log(JSON.stringify(infoJson, null, 2));
+        //console.log(JSON.stringify(infoJson, null, 2));
         return JSON.stringify(infoJson, null, 2);
     }
 
@@ -122,14 +121,14 @@ export default function AutomataList({automata, onAutomataChange}) {
                 className={classes.tabs}
             >
                 {
-                    Object.keys(automata).map(auto=>(
+                    Object.keys(automata).map(auto => (
                         <Tab label={auto} {...a11yProps(0)} />
                     ))
                 }
             </Tabs>
-            
+
             {
-                Object.keys(automata).map((auto, index)=>(
+                Object.keys(automata).map((auto, index) => (
                     <TabPanel value={value} index={index}>
                         {convertJSON(automata[auto])}
                     </TabPanel>

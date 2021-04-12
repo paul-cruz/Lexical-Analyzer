@@ -12,7 +12,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 
-
 const useStyles = makeStyles({
     formInput: {
         marginTop: "1rem",
@@ -283,7 +282,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             case "Union for lexical analyzer":
                 nuevoAFN = selectedOption;
                 console.log(selectedOption, selectedOption2, symbol);
-                //onAutomataChange({...automata, [selectedOption]: nuevoAFN.UnionEspecialAFNs()});
+                onAutomataChange({...automata, [selectedOption]: nuevoAFN.UnionEspecialAFNs()});
                 
                 break;
             case "Convert NFA to DFA":

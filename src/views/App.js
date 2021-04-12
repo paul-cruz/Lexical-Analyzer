@@ -17,10 +17,32 @@ const useStyles = makeStyles({
 export default function App() {
   const classes = useStyles();
   const [automata, setAutomata] = React.useState({});
+  const [nodesArray, setNodesArray] = React.useState([]);
+  const [edgesArray, setEdgesArray] = React.useState([]);
+  const [selectedAutomata, setSelectedAutomata] = React.useState(null);
+
+
+  const drawGraphs = () => {
+    var nodes = [];
+    var edges = [];
+    const element = selectedAutomata ? automata[selectedAutomata] : Object.keys(automata).length > 0 ? Object.values(automata)[0] : null;
+    if (element) {
+      element.EdosAFN.forEach((edo) => {
+        nodes.push({ id: edo.IdEstado, label: `${edo.IdEstado}` });
+        edo.Trans.forEach((trans) => {
+          edges.push({ from: edo.IdEstado, to: trans.__edo__.IdEstado, label: trans.__simbInf__ === trans.__simbSup__ ? trans.__simbInf__ : `${trans.__simbInf__}-${trans.__simbSup__}` });
+        })
+      })
+    }
+    setNodesArray(nodes);
+    setEdgesArray(edges);
+  }
 
   React.useEffect(() => {
-    console.log(automata);
-  });
+    //console.log(automata);
+    drawGraphs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedAutomata, automata]);
 
   return (
     <div className="App">
@@ -32,10 +54,10 @@ export default function App() {
         spacing={1}
         className={classes.grid}>
         <Grid item xs={4} >
-          <AutomataList automata={automata} onAutomataChange={setAutomata} />
+          <AutomataList automata={automata} setSelectedAutomata={setSelectedAutomata} />
         </Grid>
         <Grid item xs={8} className={classes.graphPaper} >
-          <AutomataGraphs />
+          <AutomataGraphs nodesArray={nodesArray} edgesArray={edgesArray} />
         </Grid>
       </Grid>
     </div>
