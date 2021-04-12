@@ -93,7 +93,7 @@ class AFN {
 
         e1.Trans.add(t);
         e2.EdoAcept = true;
-        for (i = s1.charCodeAt(0); i < s2.charCodeAt(0); i++) {
+        for (i = s1.charCodeAt(0); i < s2.charCodeAt(0) + 1; i++) {
             this.Alfabeto.add(String.fromCharCode(i));
         }
         this.EdoIni = e1;
