@@ -19,30 +19,12 @@ const useStyles = makeStyles({
     }
 });
 
-
-
 export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog }) {
     const classes = useStyles();
     const [name, setName] = React.useState('');
     const [symbol, setSymbol] = React.useState('');
-    const [selectedOption, setSelectedOption] = React.useState('');
-    const [selectedOption2, setSelectedOption2] = React.useState("");
-
-    const getAutomatas = () => (
-        Object.keys(automata).map(key=>(
-            <MenuItem value={key} name={key}>{key}</MenuItem>
-        ))
-    )
-
-    const selectedAFN = (event) => {
-        const key = event.target.value;
-        setSelectedOption(automata[key]);
-    }
-
-    const selectedAFN2 = (event) => {
-        const key = event.target.value;
-        setSelectedOption2(automata[key]);
-    }
+    const [NFA1, setNFA1] = React.useState('');
+    const [NFA2, setNFA2] = React.useState('');
 
     const forms = {
         'AddBasic': <DialogContent>
@@ -71,76 +53,118 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         </DialogContent>,
         'Join': <DialogContent>
             <DialogContentText>
-                Select 2 NFAs to Join them
+                Select 2 NFA to Join them
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA 1</InputLabel>
-            <Select
-                className={classes.formInput}
-                margin="dense"
-                id="AFN2"
-                fullWidth
-            >
-            </Select>
-
-            <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
+            <InputLabel id="nfa1-label">NFA 1</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
+            </Select>
+            <InputLabel id="nfa2-label">NFA 2</InputLabel>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN2"
+                fullWidth
+                defaultValue={NFA2 ? NFA2 : ''}
+                onChange={(e) => setNFA2(e.target.value)}
+            >
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Concat': <DialogContent>
             <DialogContentText>
                 Select 2 NFAs to concatenate them
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA 1</InputLabel>
+            <InputLabel id="nfa1-label">NFA 1</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
-            <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
+            <InputLabel id="nfa2-label">NFA 2</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN2"
                 fullWidth
+                defaultValue={NFA2 ? NFA2 : ''}
+                onChange={(e) => setNFA2(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Positive Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Positive Closure
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <InputLabel id="nfa1-label">NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Kleene Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Kleene Closure
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <InputLabel id="nfa1-label">NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Once or none': <DialogContent>
@@ -153,10 +177,8 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 margin="dense"
                 id="AFN1"
                 fullWidth
-                onChange={selectedAFN}
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {getAutomatas()}
             </Select>
         </DialogContent>,
         'Union for lexical analyzer': <DialogContent>
@@ -169,34 +191,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 margin="dense"
                 id="AFN1"
                 fullWidth
-                onChange={selectedAFN}
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {getAutomatas()}
             </Select>
-
-            <InputLabel id="demo-simple-select-label">Union with</InputLabel>
-            <Select
-                className={classes.formInput}
-                margin="dense"
-                id="AFN1"
-                fullWidth
-                onChange={selectedAFN2}
-            >
-                <MenuItem value={null}>Select</MenuItem>
-                {getAutomatas()}
-            </Select>
-
-            <TextField
-                className={classes.formInput}
-                autoFocus
-                margin="dense"
-                id="token"
-                label="Token"
-                defaultValue={symbol}
-                onChange={(e) => { setSymbol(e.target.value) }}
-                fullWidth
-            />
         </DialogContent>,
         'Convert NFA to DFA': <DialogContent>
             <DialogContentText>
@@ -244,6 +241,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     useEffect(() => {
         setSelectedForm(forms[keyForm]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keyForm]);
 
     const handleClose = () => {
@@ -254,7 +252,6 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const handleForm = (e) => {
         setOpen(false);
         setDialog(null);
-        let nuevoAFN;
 
         switch (keyForm) {
             case "AddBasic":
@@ -268,22 +265,36 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 onAutomataChange({ ...automata, [name]: newAFN });
                 break;
             case "Join":
+                if (NFA1 !== NFA2) {
+                    const dest = automata[NFA1];
+                    dest.UnirAFN(automata[NFA2]);
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Concat":
+                if (NFA1 !== NFA2) {
+                    const dest = automata[NFA1];
+                    dest.ConcAFN(automata[NFA2]);
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Positive Closure":
+                if (NFA1) {
+                    const dest = automata[NFA1];
+                    dest.cerrPos();
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Kleene Closure":
+                if (NFA1) {
+                    const dest = automata[NFA1];
+                    dest.cerrKleene();
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Once or none":
-                nuevoAFN = selectedOption;
-                onAutomataChange({...automata, [selectedOption]: nuevoAFN.opcional()});
                 break;
             case "Union for lexical analyzer":
-                nuevoAFN = selectedOption;
-                console.log(selectedOption, selectedOption2, symbol);
-                onAutomataChange({...automata, [selectedOption]: nuevoAFN.UnionEspecialAFNs()});
-                
                 break;
             case "Convert NFA to DFA":
                 break;
