@@ -28,7 +28,13 @@ export default function App() {
     const element = selectedAutomata ? automata[selectedAutomata] : Object.keys(automata).length > 0 ? Object.values(automata)[0] : null;
     if (element) {
       element.EdosAFN.forEach((edo) => {
-        nodes.push({ id: edo.IdEstado, label: `${edo.IdEstado}` });
+        if (edo.EdoAcept) {
+          nodes.push({ id: edo.IdEstado, label: `${edo.IdEstado}`, font: { color: 'white' }, color: 'red' });
+        } else if (element.EdoIni === edo) {
+          nodes.push({ id: edo.IdEstado, label: `${edo.IdEstado}`, font: { color: 'white' }, color: 'green' });
+        } else {
+          nodes.push({ id: edo.IdEstado, label: `${edo.IdEstado}` });
+        }
         edo.Trans.forEach((trans) => {
           edges.push({ from: edo.IdEstado, to: trans.__edo__.IdEstado, label: trans.__simbInf__ === trans.__simbSup__ ? trans.__simbInf__ : `${trans.__simbInf__}-${trans.__simbSup__}` });
         })
