@@ -77,6 +77,7 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
                     });
                     break;
                 case "EdosAFN":     //Trancisiones de estados
+
                     jsonContent[key].forEach(trans => {
                         trans.Trans.forEach(transicion => {
                             const simbInf = transicion.__simbInf__;
