@@ -29,7 +29,7 @@ class Queue {
     }
 
     dequeue() {
-        if (this.isEmpty())
+        if (this.items.length < 1)
             return "Underflow";
         return this.items.shift();
     }
@@ -197,7 +197,8 @@ class AFN {
             R.add(aux);
             // eslint-disable-next-line
             aux.Trans.forEach((trans) => {
-                Edo = trans.GetEdoTrans(SimbolosEspeciales.EPSILON);
+                console.log(trans);
+                Edo = trans.getEdoTrans(SimbolosEspeciales.EPSILON);
                 if (Edo != null) {
                     if (!R.has(Edo)) {
                         S.push(Edo);
@@ -312,7 +313,7 @@ class AFN {
         var EdosSinAnalizar = new Queue();
         var banderaBreak = false;
         EdosAFD.clear();
-        CardAlfabeto = this.Alfabeto.count();
+        CardAlfabeto = this.Alfabeto.size;
         ArrAlfabeto = new Array(CardAlfabeto);
         i = 0;
         this.Alfabeto.forEach(c => {
@@ -329,7 +330,8 @@ class AFN {
             Ij = EdosSinAnalizar.dequeue();
             // eslint-disable-next-line
             ArrAlfabeto.forEach((c) => {
-                Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjI, c));
+                console.log(Ij);
+                Ik = new ConjIj(CardAlfabeto, this.Ir_A(Ij.ConjIj.entries, c));
                 if (Ik.ConjI.count === 0) {
                     return;
                 }

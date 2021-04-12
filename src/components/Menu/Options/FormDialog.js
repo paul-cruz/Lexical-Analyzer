@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import AnalizadorLexico from '../../../classes/Class3';
 
 const useStyles = makeStyles({
     formInput: {
@@ -206,17 +207,6 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 <MenuItem value={null}>Select</MenuItem>
                 {getAutomatas()}
             </Select>
-            <Select
-                className={classes.formInput}
-                margin="dense"
-                id="AFN2"
-                defaultValue={NFA2 ? NFA2 : ''}
-                onChange={(e) => setNFA2(e.target.value)}
-                fullWidth
-            >
-                <MenuItem value={null}>Select</MenuItem>
-                {getAutomatas()}
-            </Select>
             <TextField
                 className={classes.formInput}
                 margin="dense"
@@ -236,21 +226,38 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
             </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>
             <DialogContentText>
                 Introduce a string to analyze it
             </DialogContentText>
+            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN1"
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
+                fullWidth
+            >
+                <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
+            </Select>
             <TextField
                 className={classes.formInput}
                 autoFocus
                 margin="dense"
                 id="name"
-                label="String to analyze"
+                label="Analyze string"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
                 fullWidth
             />
         </DialogContent>,
@@ -331,15 +338,39 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 onAutomataChange({...automata, [NFA1]: dest.opcional()});
                 break;
             case "Union for lexical analyzer":
-                if(NFA1 && NFA2 && symbol){
-                    const dest = automata[NFA1];
-                    dest.UnionEspecialAFNs(automata[NFA2], symbol);
-                    onAutomataChange({...automata, [NFA1]: dest})
+                if(NFA1 && symbol){
+                    if(automata["AFNLex1"]){
+                        const dest = automata["AFNLex1"];
+                        dest.UnionEspecialAFNs(automata[NFA1], symbol);
+                        onAutomataChange({...automata, ["AFNLex1"]: dest})
+                        delete automata[NFA1];
+                    } else {
+                        const dest = new AFN();
+                        dest.UnionEspecialAFNs(automata[NFA1], symbol);
+                        onAutomataChange({...automata, ["AFNLex1"]: dest})
+                        delete automata[NFA1];
+                    }
+                    
                     break;
                 }
             case "Convert NFA to DFA":
+                if(NFA1){
+                    const dest = automata[NFA1];
+                    console.log(dest.ConvAFNaAFD());
+                }
                 break;
             case "Analyze string":
+                if(symbol){
+                    const dest = automata[NFA1];
+                    const string2Analyze = symbol;
+                    console.log(AnalizadorLexico.AnalizLexic(string2Analyze, dest).yylex());
+                    if(true){
+                        alert("It's a valid tring!");
+                    } else {
+                        alert("It's an invalid string!");
+                    }
+                    
+                }
                 break;
             case "Test lexical analyzer":
                 break;

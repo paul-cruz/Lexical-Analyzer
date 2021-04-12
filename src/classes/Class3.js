@@ -30,7 +30,7 @@ var AnalizadorLexico = {
         this.token = -1;
         /*this.Pila = new Stack();
         this.Pila.clear();*/
-        this.AutomataFD = AutFD ? AutFD : null;
+        this.AutomataFD = AutAFD ? AutAFD : null;
         this.EstadoActual = 0;
         this.CaracterAcepPrevio = -1;
         this.Lexemas = [];
@@ -78,3 +78,5 @@ var AnalizadorLexico = {
     }
     
 }
+
+export default AnalizadorLexico;
