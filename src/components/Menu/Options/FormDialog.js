@@ -199,10 +199,33 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
             </Select>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN2"
+                defaultValue={NFA2 ? NFA2 : ''}
+                onChange={(e) => setNFA2(e.target.value)}
+                fullWidth
+            >
+                <MenuItem value={null}>Select</MenuItem>
+                {getAutomatas()}
+            </Select>
+            <TextField
+                className={classes.formInput}
+                margin="dense"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+                id="symbol"
+                label="Token"
+            />
         </DialogContent>,
         'Convert NFA to DFA': <DialogContent>
             <DialogContentText>
@@ -308,7 +331,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 onAutomataChange({...automata, [NFA1]: dest.opcional()});
                 break;
             case "Union for lexical analyzer":
-                break;
+                if(NFA1 && NFA2 && symbol){
+                    const dest = automata[NFA1];
+                    dest.UnionEspecialAFNs(automata[NFA2], symbol);
+                    onAutomataChange({...automata, [NFA1]: dest})
+                    break;
+                }
             case "Convert NFA to DFA":
                 break;
             case "Analyze string":
