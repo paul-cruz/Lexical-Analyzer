@@ -71,7 +71,6 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     })
                 }
             </Select>
-
             <InputLabel id="nfa2-label">NFA 2</InputLabel>
             <Select
                 className={classes.formInput}
@@ -93,51 +92,79 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             <DialogContentText>
                 Select 2 NFAs to concatenate them
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA 1</InputLabel>
+            <InputLabel id="nfa1-label">NFA 1</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
-            <InputLabel id="demo-simple-select-label">NFA 2</InputLabel>
+            <InputLabel id="nfa2-label">NFA 2</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN2"
                 fullWidth
+                defaultValue={NFA2 ? NFA2 : ''}
+                onChange={(e) => setNFA2(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Positive Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Positive Closure
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <InputLabel id="nfa1-label">NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Kleene Closure': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Kleene Closure
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <InputLabel id="nfa1-label">NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
                 id="AFN1"
                 fullWidth
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {
+                    Object.keys(automata).map((key) => {
+                        return <MenuItem key={key} value={key}>{key}</MenuItem>
+                    })
+                }
             </Select>
         </DialogContent>,
         'Once or none': <DialogContent>
@@ -245,10 +272,25 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 }
                 break;
             case "Concat":
+                if (NFA1 !== NFA2) {
+                    const dest = automata[NFA1];
+                    dest.ConcAFN(automata[NFA2]);
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Positive Closure":
+                if (NFA1) {
+                    const dest = automata[NFA1];
+                    dest.cerrPos();
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Kleene Closure":
+                if (NFA1) {
+                    const dest = automata[NFA1];
+                    dest.cerrKleene();
+                    onAutomataChange({ ...automata, [NFA1]: dest });
+                }
                 break;
             case "Once or none":
                 break;
