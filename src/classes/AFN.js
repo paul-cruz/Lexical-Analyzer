@@ -292,8 +292,9 @@ class AFN {
             this.EdosAFN.clear();
             this.Alfabeto.clear();
             e = new Estado();
+            this.EdoIni = e;
             e.Trans.add(new Transicion(SimbolosEspeciales.EPSILON, undefined, f.EdoIni));
-            f.EdoIni = e;
+            //f.EdoIni = e;
             this.EdosAFN.add(e);
             this.SeAgregoAFNUnionLexico = true;
         } else
