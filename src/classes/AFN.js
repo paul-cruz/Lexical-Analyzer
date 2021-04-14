@@ -195,6 +195,8 @@ class AFN {
                 R.add(aux);
                 aux.Trans.forEach(t => {
                     Edo = t.getEdoTrans(SimbolosEspeciales.EPSILON);
+                    //console.log("El simbolo", SimbolosEspeciales.EPSILON);
+                    //console.log("Estado final",Edo);
                     if(Edo != null){    //no asignacion y comparacion
                         if(!R.has(Edo)){
                             S.push(Edo);
@@ -206,9 +208,10 @@ class AFN {
     }
 
     cerraduraEpsilonEstados(edos) {
+        
         var R = new Set();
         var S = new Stack();
-        var aux, Edo;
+        var aux, EdoF;
 
         edos.forEach(e => {
             S.push(e);
@@ -216,15 +219,17 @@ class AFN {
 
         while(S.items.length != 0){
             aux = S.pop();
+            //console.log("Aux", aux)
             R.add(aux);
             aux.Trans.forEach(t => {
-                Edo = t.getEdoTrans(SimbolosEspeciales.EPSILON);
-                if(Edo != null){
-                    if(!R.has(Edo)){
-                        S.push(Edo);
+                EdoF = t.getEdoTrans(SimbolosEspeciales.EPSILON);
+                if(EdoF != null){
+                    if(!R.has(EdoF)){
+                        S.push(EdoF);
                     }
                 }
             })
+            
         }
         return R;   
     }
@@ -253,6 +258,8 @@ class AFN {
     }
 
     Mover(Edo, Simb) {
+        //console.log("Mover",Edo);
+        //console.log("Mover",Simb);
         var C = new Set();
         var aux;
 
@@ -263,11 +270,13 @@ class AFN {
                 C.add(aux);
             }
         });
-
+        //console.log("C mover",C);
         return C;
     }
 
     MoverMas(Edos, Simb) {
+        //console.log("Mover mas",Edos);
+        //console.log("Mover mas",Simb);
         var C = new Set();
         var aux;
         C.clear();
@@ -280,14 +289,17 @@ class AFN {
                 }
             });
         });
-
+        //console.log("C mover mas",C);
         return C;
     }
 
     Ir_A(Edos, Simb) {
+        //console.log("Ir a Edos",Edos);
+        console.log("Ir a Simbolo",Simb);
         var C = new Set();
         C.clear();
         C = this.cerraduraEpsilonEstados(this.MoverMas(Edos, Simb));
+        //console.log("C Ir a",C);
         return C;
     }
 
@@ -316,7 +328,7 @@ class AFN {
 
     IndiceCaracter(ArregloAlfabeto, c) {
         var i;
-        for (i = 0; i < ArregloAlfabeto.size(); i++) {
+        for (i = 0; i < ArregloAlfabeto.length; i++) {
             if (ArregloAlfabeto[i] === c) {
                 return i;
             }
@@ -350,24 +362,27 @@ class AFN {
 
         this.Alfabeto.forEach( c => ArrAlfabeto[i++] = c);      //Cambiando sintaxis del foreach
 
-        Ik = new ConjIj(CardAlfabeto);
+        //Ik = new ConjIj(CardAlfabeto);
         j = 0;
         Ij = new ConjIj(CardAlfabeto);
         Ij.ConjI = this.cerraduraEpsilon(this.EdoIni);       //Cambio de sintaxis para asignar variables de clase
+        
         Ij.j = j;
 
         EdosAFD.add(Ij);
+        console.log("EAFD",EdosAFD);
         EdosSinAnalizar.enqueue(Ij);
         j++;
         while(EdosSinAnalizar.items.length != 0){       //cambiando count por items.length
             Ij = EdosSinAnalizar.dequeue();
             ArrAlfabeto.forEach( c => {         //Cambiando sintaxis de for each
                 Ik = new ConjIj(CardAlfabeto);
-                Ik.ConjIj = this.Ir_A(Ij.ConjI, c);
+                Ik.ConjI = this.Ir_A(Ij.ConjI, c);                
                 if(Ik.ConjI.size == 0){
                     //continue;
                     return;     //Cambiando por return por funcionamiento de foreach en Js
                 }
+                
                 existe = false;
                 var banderaBreak = false;
                 EdosAFD.forEach( I => {     //cambiando sintaxis de foreach
@@ -383,14 +398,15 @@ class AFN {
                 });
                 if(!existe){
                     Ik.j = j;
-                    EdosAFD.add(Ik);
                     EdosSinAnalizar.enqueue(Ik);
                     j++;
                 }
             });
+            EdosAFD.add(Ij);
         }
 
         EdosAFD.forEach(I => {      //cambiando sintaxis de for each
+            console.log("I",I.ConjI);
             ConjAux.clear();
             ConjAux = new Set([...ConjAux, ...I.ConjI]);        //cambiando sintaxis de unionwith
             ConjAux = new Set([...ConjAux].filter(element => I.ConjI.has(element)));     //Cambiando sintaxis de intersect
