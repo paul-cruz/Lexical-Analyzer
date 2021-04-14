@@ -420,7 +420,7 @@ class AFN {
             for(let m = 0 ; m < AutFD.TransicionesAFD.length ; m++){
                 AutFD.TransicionesAFD[m] = new Array(CardAlfabeto);
             }
-
+            console.log(I.TransicionesAFD);
             EdosAFD.forEach(I => {
                 for(let columna = 0 ; columna <= CardAlfabeto ; columna++){
                     AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];   //cambiando forma de acceder a transiciones AFD[1,2] por [1][2]
