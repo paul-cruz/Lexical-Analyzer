@@ -190,14 +190,12 @@ class AFN {
 
             S.push(e);
 
-            while(S.items.length != 0){
+            while(S.items.length !== 0){
                 aux = S.pop();
-                R.add(aux);
+                R.add(aux);// eslint-disable-next-line
                 aux.Trans.forEach(t => {
                     Edo = t.getEdoTrans(SimbolosEspeciales.EPSILON);
-                    //console.log("El simbolo", SimbolosEspeciales.EPSILON);
-                    //console.log("Estado final",Edo);
-                    if(Edo != null){    //no asignacion y comparacion
+                    if(Edo !== null){    //no asignacion y comparacion
                         if(!R.has(Edo)){
                             S.push(Edo);
                         }
@@ -211,21 +209,21 @@ class AFN {
         
         var R = new Set();
         var S = new Stack();
-        var aux, EdoF;
+        var aux, Edo;
 
         edos.forEach(e => {
             S.push(e);
         });
 
-        while(S.items.length != 0){
+        while(S.items.length !== 0){
             aux = S.pop();
-            //console.log("Aux", aux)
-            R.add(aux);
+
+            R.add(aux);// eslint-disable-next-line
             aux.Trans.forEach(t => {
-                EdoF = t.getEdoTrans(SimbolosEspeciales.EPSILON);
-                if(EdoF != null){
-                    if(!R.has(EdoF)){
-                        S.push(EdoF);
+                Edo = t.getEdoTrans(SimbolosEspeciales.EPSILON);
+                if(Edo !== null){
+                    if(!R.has(Edo)){
+                        S.push(Edo);
                     }
                 }
             })
@@ -266,7 +264,7 @@ class AFN {
         C.clear();
         Edo.Trans.forEach(t => {
             aux = t.GetEdoTrans(Simb);
-            if (aux != null) {
+            if (aux !== null) {
                 C.add(aux);
             }
         });
@@ -284,7 +282,7 @@ class AFN {
         Edos.forEach(Edo => {
             Edo.Trans.forEach(t => {
                 aux = t.getEdoTrans(Simb);
-                if(aux != null){
+                if(aux !== null){
                     C.add(aux);
                 }
             });
@@ -344,7 +342,7 @@ class AFN {
 
     ConvAFNaAFD() {
         var CardAlfabeto;
-        var i, j, r;
+        var i, j;
         var ArrAlfabeto = [];
         var Ij, Ik;
         var existe;
@@ -373,12 +371,13 @@ class AFN {
         console.log("EAFD",EdosAFD);
         EdosSinAnalizar.enqueue(Ij);
         j++;
-        while(EdosSinAnalizar.items.length != 0){       //cambiando count por items.length
-            Ij = EdosSinAnalizar.dequeue();
+        while(EdosSinAnalizar.items.length !== 0){       //cambiando count por items.length
+            Ij = EdosSinAnalizar.dequeue();// eslint-disable-next-line
             ArrAlfabeto.forEach( c => {         //Cambiando sintaxis de for each
                 Ik = new ConjIj(CardAlfabeto);
-                Ik.ConjI = this.Ir_A(Ij.ConjI, c);                
-                if(Ik.ConjI.size == 0){
+
+                Ik.ConjIj = this.Ir_A(Ij.ConjI, c);
+                if(Ik.ConjI.size === 0){
                     //continue;
                     return;     //Cambiando por return por funcionamiento de foreach en Js
                 }
@@ -411,7 +410,7 @@ class AFN {
             ConjAux = new Set([...ConjAux, ...I.ConjI]);        //cambiando sintaxis de unionwith
             ConjAux = new Set([...ConjAux].filter(element => I.ConjI.has(element)));     //Cambiando sintaxis de intersect
             let banderaBreak = false;
-            if(ConjAux.size != 0){      //Cambiando count por size
+            if(ConjAux.size !== 0){      //Cambiando count por size
                 ConjAux.forEach(EdoAcept => {       //Cambiando sintaxis de for each
                     if(banderaBreak){   //Supliendo break;
                         return;

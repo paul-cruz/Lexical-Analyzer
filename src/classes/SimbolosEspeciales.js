@@ -3,4 +3,6 @@ var SimbolosEspeciales = {
     FIN: String.fromCharCode(0)
 }
 
+
 export default SimbolosEspeciales
+
