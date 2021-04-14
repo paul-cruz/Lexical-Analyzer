@@ -339,15 +339,15 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 break;
             case "Union for lexical analyzer":
                 if (NFA1 && symbol) {
-                    if (automata["AFNLex1"]) {
-                        const dest = automata["AFNLex1"];
+                    if (automata["AFNLEX1"]) {
+                        const dest = automata["AFNLEX1"];
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
-                        onAutomataChange({ ...automata, "AFNLex1": dest })
+                        onAutomataChange({ ...automata, "AFNLEX1": dest })
 
                     } else {
                         const dest = new AFN();
                         dest.UnionEspecialAFNs(automata[NFA1], symbol);
-                        onAutomataChange({ ...automata, "AFNLex1": dest });
+                        onAutomataChange({ ...automata, "AFNLEX1": dest });
                     }
 
                     delete automata[NFA1];  //esta es la madre que deberia borrar el AFN 1 xd
