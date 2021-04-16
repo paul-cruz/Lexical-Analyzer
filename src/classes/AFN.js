@@ -217,7 +217,6 @@ class AFN {
 
         while(S.items.length !== 0){
             aux = S.pop();
-
             R.add(aux);// eslint-disable-next-line
             aux.Trans.forEach(t => {
                 Edo = t.getEdoTrans(SimbolosEspeciales.EPSILON);
