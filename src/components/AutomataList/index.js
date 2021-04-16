@@ -6,8 +6,29 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
+const tabStyles = makeStyles(() => ({
+    tab: {
+        height: "90vh",
+        overflowY: "scroll",
+        scrollBehavior: "smooth",
+        overflowY: "auto", 
+        overflowX: "auto", 
+        width: "60%", 
+        textAlign: "initial"
+    },
+    typography: {
+        marginLeft: "2rem"
+    }
+}));
+
 function TabPanel(props) {
+    const classes = tabStyles();
     const { children, value, index, ...other } = props;
+    
+    const changeJSONInfo = (infoText) => {
+        return infoText.split('\\u0005').join('ε');
+    }
+
     return (
         <div
             role="tabpanel"
@@ -15,10 +36,11 @@ function TabPanel(props) {
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
             {...other}
+            className={classes.tab}
         >
             {value === index && (
-                <Box p={1}>
-                    <Typography><pre>{children}</pre></Typography>
+                <Box p={1} >
+                    <Typography className={classes.typography}><pre>{changeJSONInfo(children)}</pre></Typography>
                 </Box>
             )}
         </div>

@@ -430,11 +430,11 @@ class AFN {
                 AutFD.ArrAlfabeto[i++] = c; 
             });
 
-            AutFD.TransicionesAFD = new Array(j);   //Implementación de arreglo bidimensional
-            for(let m = 0 ; m < AutFD.TransicionesAFD.length ; m++){
-                AutFD.TransicionesAFD[m] = new Array(CardAlfabeto);
+            AutFD.TransicionesAFD = {};   //Cambio por objeto de JS
+            for(let m = 0 ; m < j ; m++){
+                AutFD.TransicionesAFD[m] = {};
             }
-            console.log(I.TransicionesAFD);
+            
             EdosAFD.forEach(I => {
                 for(let columna = 0 ; columna <= CardAlfabeto ; columna++){
                     AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];   //cambiando forma de acceder a transiciones AFD[1,2] por [1][2]
