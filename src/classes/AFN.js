@@ -444,7 +444,8 @@ class AFN {
             
             EdosAFD.forEach(I => {
                 for(let columna = 0 ; columna < CardAlfabeto ; columna++){
-                    AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];   //cambiando forma de acceder a transiciones AFD[1,2] por [1][2]
+                    if(typeof I.TransicionesAFD[columna] != "undefined")
+                        AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];   //cambiando forma de acceder a transiciones AFD[1,2] por [1][2]
                 }
                 AutFD.TransicionesAFD[I.j]["Token"] = I.TransicionesAFD["Token"];
             });
