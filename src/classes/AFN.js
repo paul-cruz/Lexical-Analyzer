@@ -42,9 +42,9 @@ class ConjIj {
     constructor(CardAlf){
         this.j = -1;
         this.ConjI = new Set();
-        this.TransicionesAFD = new Array(CardAlf+1);
+        this.TransicionesAFD = {}/*new Array(CardAlf+1);
         for(let k = 0 ; k <= CardAlf ; k++)
-            this.TransicionesAFD[k] = -1;
+            this.TransicionesAFD[k] = -1;*/
     }
 
 }
@@ -292,7 +292,7 @@ class AFN {
 
     Ir_A(Edos, Simb) {
         //console.log("Ir a Edos",Edos);
-        console.log("Ir a Simbolo",Simb);
+        //console.log("Ir a Simbolo",Simb);
         var C = new Set();
         C.clear();
         C = this.cerraduraEpsilonEstados(this.MoverMas(Edos, Simb));
@@ -366,8 +366,7 @@ class AFN {
         
         Ij.j = j;
 
-        EdosAFD.add(Ij);
-        console.log("EAFD",EdosAFD);
+        //EdosAFD.add(Ij);
         EdosSinAnalizar.enqueue(Ij);
         j++;
         while(EdosSinAnalizar.items.length !== 0){       //cambiando count por items.length
@@ -375,7 +374,7 @@ class AFN {
             ArrAlfabeto.forEach( c => {         //Cambiando sintaxis de for each
                 Ik = new ConjIj(CardAlfabeto);
 
-                Ik.ConjIj = this.Ir_A(Ij.ConjI, c);
+                Ik.ConjI = this.Ir_A(Ij.ConjI, c);
                 if(Ik.ConjI.size === 0){
                     //continue;
                     return;     //Cambiando por return por funcionamiento de foreach en Js
@@ -383,28 +382,34 @@ class AFN {
                 
                 existe = false;
                 var banderaBreak = false;
+                console.log("El Ik", Ik.ConjI);
                 EdosAFD.forEach( I => {     //cambiando sintaxis de foreach
                     if(banderaBreak){   //Bandera implementada para suplir break
                         return;
                     }
+                    console.log("El I", I.ConjI);
                     if(this.eqSet(I.ConjI, Ik.ConjI)){      //Implementando función propia supliendo equals set en C#
                         existe = true;
-                        Ik.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
+                        Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
                         //break;        //No se puede hacer break en for each, se implementa bandera para apartir de aqui saltar
                         banderaBreak = true;
                     }
                 });
                 if(!existe){
+                    //console.log("Estado nuevo!");
                     Ik.j = j;
+                    Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = Ik.j;
                     EdosSinAnalizar.enqueue(Ik);
                     j++;
                 }
             });
+            console.log("Ij",Ij.ConjI);
+            console.log("Transiciones",Ij.TransicionesAFD);
             EdosAFD.add(Ij);
         }
 
         EdosAFD.forEach(I => {      //cambiando sintaxis de for each
-            console.log("I",I.ConjI);
+            //console.log("I",I.ConjI);
             ConjAux.clear();
             ConjAux = new Set([...ConjAux, ...I.ConjI]);        //cambiando sintaxis de unionwith
             ConjAux = new Set([...ConjAux].filter(element => I.ConjI.has(element)));     //Cambiando sintaxis de intersect
@@ -414,12 +419,14 @@ class AFN {
                     if(banderaBreak){   //Supliendo break;
                         return;
                     }
-                    I.TransicionesAFD[CardAlfabeto] = EdoAcept.Token;
+                    I.TransicionesAFD["Token"] = EdoAcept.Token;
+                    if(EdoAcept.Token !== -1)
+                        banderaBreak = true;
                     //break;    Implementando bandera para suplir break
-                    banderaBreak = true;
+                    
                 });
             } else {
-                I.TransicionesAFD[CardAlfabeto] = -1;
+                I.TransicionesAFD["Token"] = -1;
             }
 
             AutFD = AnalizadorLexico.AFD;
@@ -436,9 +443,10 @@ class AFN {
             }
             
             EdosAFD.forEach(I => {
-                for(let columna = 0 ; columna <= CardAlfabeto ; columna++){
+                for(let columna = 0 ; columna < CardAlfabeto ; columna++){
                     AutFD.TransicionesAFD[I.j][columna] = I.TransicionesAFD[columna];   //cambiando forma de acceder a transiciones AFD[1,2] por [1][2]
                 }
+                AutFD.TransicionesAFD[I.j]["Token"] = I.TransicionesAFD["Token"];
             });
         });
 

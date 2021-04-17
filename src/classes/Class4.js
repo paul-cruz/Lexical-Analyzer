@@ -6,7 +6,7 @@ var AnalizadorLexico = {
     AFD: {
         CardAlfabeto: 0,
         ArrAlfabeto: [],
-        TransicionesAFD: []
+        TransicionesAFD: {}
     }
 
 }
