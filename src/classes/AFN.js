@@ -350,8 +350,9 @@ class AFN {
         var ConjAux = new Set();
         var EdosAFD = new Set();
         var EdosSinAnalizar =  new Queue();     //Cambiando fila de ConjIj por pila
-
+        var NoAnalisis = new Set();
         EdosAFD.clear();
+        NoAnalisis.clear();
 
         CardAlfabeto = this.Alfabeto.size;      //cambiando Alfabeto.count por size
         ArrAlfabeto = new Array(CardAlfabeto);
@@ -395,17 +396,30 @@ class AFN {
                         banderaBreak = true;
                     }
                 });
+                NoAnalisis.forEach(I =>{
+                    if(banderaBreak){
+                        return;
+                    }
+                    if(this.eqSet(I.ConjI, Ik.ConjI)){      //Implementando función propia supliendo equals set en C#
+                        existe = true;
+                        Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
+                        //break;        //No se puede hacer break en for each, se implementa bandera para apartir de aqui saltar
+                        banderaBreak = true;
+                    }
+                });
                 if(!existe){
                     //console.log("Estado nuevo!");
                     Ik.j = j;
                     Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = Ik.j;
                     EdosSinAnalizar.enqueue(Ik);
+                    NoAnalisis.add(Ik);
                     j++;
                 }
             });
             console.log("Ij",Ij.ConjI);
             console.log("Transiciones",Ij.TransicionesAFD);
             EdosAFD.add(Ij);
+            NoAnalisis.delete(Ij);
         }
 
         EdosAFD.forEach(I => {      //cambiando sintaxis de for each
