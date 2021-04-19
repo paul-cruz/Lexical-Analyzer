@@ -5,14 +5,15 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import AFD from '../../classes/AFD';
 
 const tabStyles = makeStyles(() => ({
     tab: {
         height: "90vh",
         scrollBehavior: "smooth",
-        overflowY: "auto", 
-        overflowX: "auto", 
-        width: "60%", 
+        overflowY: "auto",
+        overflowX: "auto",
+        width: "60%",
         textAlign: "initial"
     },
     typography: {
@@ -23,7 +24,7 @@ const tabStyles = makeStyles(() => ({
 function TabPanel(props) {
     const classes = tabStyles();
     const { children, value, index, ...other } = props;
-    
+
     const changeJSONInfo = (infoText) => {
         return infoText.split('\\u0005').join('ε');
     }
@@ -86,6 +87,9 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
     };
 
     const convertJSON = (jsonContent) => {
+        if (Object.keys(jsonContent).every(key => AFD.hasOwnProperty(key))) {
+            return JSON.stringify(jsonContent, null, 2);
+        }
         const infoJson = { edoIni: null, edosAcept: [], transiciones: {}, alfabeto: [] };
         Object.keys(jsonContent).forEach((key) => {
             switch (key) {

@@ -1,4 +1,3 @@
-import AFD from './AFD';
 
 function IndiceCaracter(ArregloAlfabeto, c) {
     var i;
@@ -27,9 +26,6 @@ class AnalizadorLexico {
     yylex(){
         while(this.CaracterActual<this.CadenaSigma.length){
             var indice = this.AutomataFD.TransicionesAFD[this.EstadoActual][IndiceCaracter(this.AutomataFD.ArrAlfabeto, this.CadenaSigma.charAt(this.CaracterActual))];
-            /*console.log("Caracter", this.CadenaSigma.charAt(this.CaracterActual));
-            console.log("Estado", this.EstadoActual);
-            console.log("Indice", indice);*/
             if(typeof indice !== "undefined"){
                 this.EstadoActual = indice;
                 var tokAFD = this.AutomataFD.TransicionesAFD[this.EstadoActual]["Token"]

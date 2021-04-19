@@ -450,7 +450,6 @@ class AFN {
                 AutFD.TransicionesAFD[I.j]["Token"] = I.TransicionesAFD["Token"];
             });
         });
-        console.log(AutFD);
         return AutFD;
     }
 }
