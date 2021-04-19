@@ -43,9 +43,9 @@ export default function App() {
           var groups = {};
           Object.keys(edo).filter(key => key !== 'Token').forEach((k) => {
             if (groups[edo[k]]) {
-              groups[edo[k]].push(element.ArrAlfabeto[k]);
+              groups[edo[k]].push(k);
             } else {
-              groups[edo[k]] = [element.ArrAlfabeto[k]];
+              groups[edo[k]] = [k];
             }
           })
           Object.keys(groups).forEach((key) => {
