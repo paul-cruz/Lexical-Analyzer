@@ -11,7 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import AnalizadorLexico from '../../../classes/Class3';
+import AnalizadorLexico from '../../../classes/Class4';
 
 const useStyles = makeStyles({
     formInput: {
@@ -219,9 +219,19 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         </DialogContent>,
         'Convert NFA to DFA': <DialogContent>
             <DialogContentText>
-                Select an NFA to convert to DFA
+                Select an NFA to convert to DFA and give it a name
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <TextField
+                className={classes.formInput}
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                defaultValue={name}
+                onChange={(e) => { setName(e.target.value.toUpperCase()) }}
+                fullWidth
+            />
+            <InputLabel>NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
@@ -231,14 +241,14 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {getAutomatas()}
+                {automata["AFNLEX1"] ? <MenuItem value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
             </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>
             <DialogContentText>
                 Introduce a string to analyze it
             </DialogContentText>
-            <InputLabel id="demo-simple-select-label">NFA</InputLabel>
+            <InputLabel>NFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
@@ -247,7 +257,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 onChange={(e) => setNFA1(e.target.value)}
                 fullWidth
             >
-                <MenuItem value={null}>Select</MenuItem>
+                <MenuItem value={null} disabled>Select</MenuItem>
                 {getAutomatas()}
             </Select>
             <TextField
@@ -354,9 +364,11 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 }
                 break;
             case "Convert NFA to DFA":
-                if (NFA1) {
+                if (NFA1 && name) {
                     const dest = automata[NFA1];
-                    console.log(dest.ConvAFNaAFD());
+                    const newDFA = dest.ConvAFNaAFD();
+                    onAutomataChange({ ...automata, [name]: dest });
+                    console.log(newDFA);
                 }
                 break;
             case "Analyze string":

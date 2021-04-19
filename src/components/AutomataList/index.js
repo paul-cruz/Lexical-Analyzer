@@ -9,7 +9,6 @@ import Box from '@material-ui/core/Box';
 const tabStyles = makeStyles(() => ({
     tab: {
         height: "90vh",
-        overflowY: "scroll",
         scrollBehavior: "smooth",
         overflowY: "auto", 
         overflowX: "auto", 
