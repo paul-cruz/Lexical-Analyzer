@@ -5,7 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import AutomataList from './../components/AutomataList';
 import AutomataGraphs from './../components/AutomataGraphs';
-//import AnalizadorLexico from '../classes/Class4';
 import AFD from '../classes/AFD';
 
 const useStyles = makeStyles({
@@ -35,17 +34,17 @@ export default function App() {
           newNode = { id: index, label: `${index}` };
           if (index === 0) {
             newNode = { ...newNode, font: { color: 'white' }, color: 'green' };
-          } else if (edo.Token) {
+          } else if (edo.Token && edo.Token !== -1) {
             newNode = { ...newNode, font: { color: 'white' }, color: 'red' };
           }
           nodes.push(newNode);
-          
+
           var groups = {};
-          Object.keys(edo).filter(key => key !== 'Token').forEach((k, i) => {
+          Object.keys(edo).filter(key => key !== 'Token').forEach((k) => {
             if (groups[edo[k]]) {
-              groups[edo[k]].push(element.ArrAlfabeto[i]);
+              groups[edo[k]].push(element.ArrAlfabeto[k]);
             } else {
-              groups[edo[k]] = [element.ArrAlfabeto[i]];
+              groups[edo[k]] = [element.ArrAlfabeto[k]];
             }
           })
           Object.keys(groups).forEach((key) => {
