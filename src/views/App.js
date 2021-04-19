@@ -28,7 +28,6 @@ export default function App() {
     var edges = [];
 
     const element = selectedAutomata ? automata[selectedAutomata] : Object.keys(automata).length > 0 ? Object.values(automata)[0] : null;
-    console.log(element);
     if (element) {
       var newNode;
       if (Object.keys(element).every(key => AFD.hasOwnProperty(key))) {
@@ -78,7 +77,7 @@ export default function App() {
   }, [selectedAutomata, automata]);
 
   return (
-    <div className="App">
+    <div id="App" className="App">
       <header className="App-header"><Menu automata={automata} onAutomataChange={setAutomata} /></header>
       <Grid container
         direction="row"

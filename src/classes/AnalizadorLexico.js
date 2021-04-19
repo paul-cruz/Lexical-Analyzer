@@ -58,7 +58,7 @@ class AnalizadorLexico {
         return lex;
     }*/
 
-    analisisCadena(){
+    analisisCadena(lex_tokens){
         var estado = this.yylex();
             while(estado !== 0){
                 if(estado === -1){
@@ -66,10 +66,12 @@ class AnalizadorLexico {
                 }
                 console.log("Lexema: ",this.Lexema);
                 console.log("Token: ",this.token);
+                lex_tokens[this.Lexema] = this.token;
                 estado = this.yylex();
             }
             console.log("Lexema: ",this.Lexema);
             console.log("Token: ",this.token);
+            lex_tokens[this.Lexema] = this.token;
             return true;
     }
 }

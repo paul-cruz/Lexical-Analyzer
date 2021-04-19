@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import AFN from './../../../classes/AFN';
+import List from '@material-ui/core/List';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,19 +12,25 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import {saveAs} from 'file-saver';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import { saveAs } from 'file-saver';
 import serialize from 'serialize-javascript';
-//import AnalizadorLexico from '../../../classes/Class3';
-//import AnalizadorLexico from '../../../classes/Class4';
 import AFD from '../../../classes/AFD';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     formInput: {
         marginTop: "1rem",
         marginBottom: "1rem"
+    },
+    root: {
+        width: '100%',
+        height: 200,
+        maxWidth: 300,
+        backgroundColor: theme.palette.background.paper,
     }
-});
+}));
 
 export default function FormDialog({ keyForm, automata, onAutomataChange, open, setOpen, setDialog }) {
     const classes = useStyles();
@@ -31,7 +38,8 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const [symbol, setSymbol] = React.useState('');
     const [NFA1, setNFA1] = React.useState('');
     const [NFA2, setNFA2] = React.useState('');
-    const [JSONAction , setJSONAction] = React.useState("Import");  //Import export action
+    const [lexemesShown, setLexemesShown] = React.useState(false);
+    const [JSONAction, setJSONAction] = React.useState("Import");  //Import export action
 
     const getAutomatas = () => (
         Object.keys(automata).map(key => (
@@ -46,47 +54,47 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     );
 
     const importExportContent = <DialogContent>
-                <DialogContentText>
-                    Import / Export
+        <DialogContentText>
+            Import / Export
                 </DialogContentText>
-                <Select
-                    className={classes.formInput}
-                    margin="dense"
-                    id="IE"
-                    defaultValue={"Import"}
-                    onChange={(e) => setJSONAction(e.target.value)}
-                    fullWidth
-                >
-                    <MenuItem value={"Import"} selected={true}>Import</MenuItem>
-                    <MenuItem value={"Export"}>Export</MenuItem>
-                </Select>
-                {
-                    JSONAction === "Import" ? 
-                        <>
-                            <DialogContentText>
-                                Choose your file to import
+        <Select
+            className={classes.formInput}
+            margin="dense"
+            id="IE"
+            defaultValue={"Import"}
+            onChange={(e) => setJSONAction(e.target.value)}
+            fullWidth
+        >
+            <MenuItem value={"Import"} selected={true}>Import</MenuItem>
+            <MenuItem value={"Export"}>Export</MenuItem>
+        </Select>
+        {
+            JSONAction === "Import" ?
+                <>
+                    <DialogContentText>
+                        Choose your file to import
                             </DialogContentText>
-                            <input type="file" accept="application/JSON" id="JSONFile"/>
-                        </>
-                        :
-                        <>
-                            <DialogContentText>
-                                Select your DFA to export
+                    <input type="file" accept="application/JSON" id="JSONFile" />
+                </>
+                :
+                <>
+                    <DialogContentText>
+                        Select your DFA to export
                             </DialogContentText>
-                            <Select
-                                className={classes.formInput}
-                                margin="dense"                     
-                                id="AFN1"
-                                defaultValue={NFA1 ? NFA1 : ''}
-                                onChange={(e) => setNFA1(e.target.value)}
-                                fullWidth
-                            >
-                                <MenuItem value={null}>Select</MenuItem>
-                                {getDFAs()}        
-                            </Select>
-                        </>
-                }
-            </DialogContent>;
+                    <Select
+                        className={classes.formInput}
+                        margin="dense"
+                        id="AFN1"
+                        defaultValue={NFA1 ? NFA1 : ''}
+                        onChange={(e) => setNFA1(e.target.value)}
+                        fullWidth
+                    >
+                        <MenuItem value={null}>Select</MenuItem>
+                        {getDFAs()}
+                    </Select>
+                </>
+        }
+    </DialogContent>;
 
     const forms = {
         'AddBasic': <DialogContent>
@@ -296,7 +304,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {automata["AFNLEX1"] ? <MenuItem key="AFNLEX1"  value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
+                {automata["AFNLEX1"] ? <MenuItem key="AFNLEX1" value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
             </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>
@@ -333,7 +341,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     useEffect(() => {
         setSelectedForm(forms[keyForm]);
-        function updateForm(){
+        function updateForm() {
             forms["Import / Export"] = importExportContent;
         }
 
@@ -346,9 +354,26 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         setDialog(null);
     };
 
+    const setLexemesContent = (lex, str) => {
+        setSelectedForm(<DialogContent>
+            <DialogContentText>
+                Generated Lexemes for the {str}
+            </DialogContentText>
+            <List className={classes.root}>
+                {Object.keys(lex).map((key) => (
+                    <ListItem button key={key}>
+                        <ListItemText primary={`Lexeme: ${key}  ->  TOKEN: ${lex[key]}`} />
+                    </ListItem>
+                ))}
+            </List>
+        </DialogContent>);
+    }
+
     const handleForm = async (e) => {
-        setOpen(false);
-        setDialog(null);
+        if (keyForm !== 'Analyze string' || lexemesShown) {
+            setOpen(false);
+            setDialog(null);
+        }
 
         switch (keyForm) {
             case "AddBasic":
@@ -423,20 +448,22 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
                     const analyzer = new AnalizadorLexico(string2Analyze, dest);
-                    if (analyzer.analisisCadena()) {
-                        alert("It's a valid string!");
+                    const lex_tokens = {};
+                    if (analyzer.analisisCadena(lex_tokens)) {
+                        setLexemesContent(lex_tokens, 'valid string');
                     } else {
-                        alert("It's an invalid string!");
+                        setLexemesContent(lex_tokens, 'invalid string');
                     }
+                    setLexemesShown(true);
 
                 }
                 break;
             case "Import / Export":
-                if(JSONAction === "Import"){
+                if (JSONAction === "Import") {
                     const fr = new FileReader();
                     const name = document.getElementById("JSONFile").files[0].name.split(".")[0];
-                    fr.onload = function(){// eslint-disable-next-line
-                        onAutomataChange({...automata, [name]: eval("(" +fr.result + ")")});
+                    fr.onload = function () {// eslint-disable-next-line
+                        onAutomataChange({ ...automata, [name]: eval("(" + fr.result + ")") });
                     }
                     fr.readAsText(document.getElementById("JSONFile").files[0]);
                 } else {
@@ -454,7 +481,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     };
 
     return (
-        <div>
+        <div id="dialog-container">
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">{keyForm}</DialogTitle>
                 {selectedForm ? selectedForm : null}
@@ -463,7 +490,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                         Cancel
                     </Button>
                     <Button onClick={handleForm}>
-                        Save
+                        Ok
                     </Button>
                 </DialogActions>
             </Dialog>
