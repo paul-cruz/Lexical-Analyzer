@@ -1,7 +1,8 @@
 import Estado from './Estado';
 import Transicion from './Transicion';
 import SimbolosEspeciales from './SimbolosEspeciales';
-import AnalizadorLexico from './Class4';   //AFD
+import AFD from './AFD';
+//import AnalizadorLexico from './Class4';   //AFD
 
 class Stack {
     constructor() {
@@ -255,8 +256,6 @@ class AFN {
     }
 
     Mover(Edo, Simb) {
-        //console.log("Mover",Edo);
-        //console.log("Mover",Simb);
         var C = new Set();
         var aux;
 
@@ -267,13 +266,10 @@ class AFN {
                 C.add(aux);
             }
         });
-        //console.log("C mover",C);
         return C;
     }
 
     MoverMas(Edos, Simb) {
-        //console.log("Mover mas",Edos);
-        //console.log("Mover mas",Simb);
         var C = new Set();
         var aux;
         C.clear();
@@ -286,17 +282,13 @@ class AFN {
                 }
             });
         });
-        //console.log("C mover mas",C);
         return C;
     }
 
     Ir_A(Edos, Simb) {
-        //console.log("Ir a Edos",Edos);
-        //console.log("Ir a Simbolo",Simb);
         var C = new Set();
         C.clear();
         C = this.cerraduraEpsilonEstados(this.MoverMas(Edos, Simb));
-        //console.log("C Ir a",C);
         return C;
     }
 
@@ -383,12 +375,10 @@ class AFN {
                 
                 existe = false;
                 var banderaBreak = false;
-                console.log("El Ik", Ik.ConjI);
                 EdosAFD.forEach( I => {     //cambiando sintaxis de foreach
                     if(banderaBreak){   //Bandera implementada para suplir break
                         return;
                     }
-                    console.log("El I", I.ConjI);
                     if(this.eqSet(I.ConjI, Ik.ConjI)){      //Implementando función propia supliendo equals set en C#
                         existe = true;
                         Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = I.j;
@@ -408,7 +398,6 @@ class AFN {
                     }
                 });
                 if(!existe){
-                    //console.log("Estado nuevo!");
                     Ik.j = j;
                     Ij.TransicionesAFD[this.IndiceCaracter(ArrAlfabeto, c)] = Ik.j;
                     EdosSinAnalizar.enqueue(Ik);
@@ -416,14 +405,11 @@ class AFN {
                     j++;
                 }
             });
-            console.log("Ij",Ij.ConjI);
-            console.log("Transiciones",Ij.TransicionesAFD);
             EdosAFD.add(Ij);
             NoAnalisis.delete(Ij);
         }
 
         EdosAFD.forEach(I => {      //cambiando sintaxis de for each
-            //console.log("I",I.ConjI);
             ConjAux.clear();
             ConjAux = new Set([...ConjAux, ...I.ConjI]);        //cambiando sintaxis de unionwith
             ConjAux = new Set([...ConjAux].filter(element => I.ConjI.has(element)));     //Cambiando sintaxis de intersect
@@ -443,7 +429,7 @@ class AFN {
                 I.TransicionesAFD["Token"] = -1;
             }
 
-            AutFD = AnalizadorLexico.AFD;
+            AutFD = AFD;
             AutFD.CardAlfabeto = CardAlfabeto;
 
             i = 0;
@@ -464,7 +450,6 @@ class AFN {
                 AutFD.TransicionesAFD[I.j]["Token"] = I.TransicionesAFD["Token"];
             });
         });
-
         return AutFD;
     }
 }

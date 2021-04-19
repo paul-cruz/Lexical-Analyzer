@@ -5,14 +5,15 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import AFD from '../../classes/AFD';
 
 const tabStyles = makeStyles(() => ({
     tab: {
         height: "90vh",
         scrollBehavior: "smooth",
-        overflowY: "auto", 
-        overflowX: "auto", 
-        width: "60%", 
+        overflowY: "auto",
+        overflowX: "auto",
+        width: "60%",
         textAlign: "initial"
     },
     typography: {
@@ -23,7 +24,7 @@ const tabStyles = makeStyles(() => ({
 function TabPanel(props) {
     const classes = tabStyles();
     const { children, value, index, ...other } = props;
-    
+
     const changeJSONInfo = (infoText) => {
         return infoText.split('\\u0005').join('ε');
     }
@@ -39,7 +40,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={1} >
-                    <Typography className={classes.typography}><pre>{changeJSONInfo(children)}</pre></Typography>
+                    <Typography component={'div'} className={classes.typography}><pre>{changeJSONInfo(children)}</pre></Typography>
                 </Box>
             )}
         </div>
@@ -86,8 +87,10 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
     };
 
     const convertJSON = (jsonContent) => {
+        if (Object.keys(jsonContent).every(key => AFD.hasOwnProperty(key))) {
+            return JSON.stringify(jsonContent, null, 2);
+        }
         const infoJson = { edoIni: null, edosAcept: [], transiciones: {}, alfabeto: [] };
-        console.log(jsonContent);
         Object.keys(jsonContent).forEach((key) => {
             switch (key) {
                 case "EdoIni":  //inicial
@@ -102,7 +105,6 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
 
                     jsonContent[key].forEach(trans => {
                         trans.Trans.forEach(transicion => {
-                            console.log(transicion);
                             const simbInf = transicion.__simbInf__;
                             const simbSup = transicion.__simbSup__;
                             const edoTrans = transicion.__edo__.IdEstado;
@@ -136,7 +138,6 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
                     break;
             }
         });
-        //console.log(JSON.stringify(infoJson, null, 2));
         return JSON.stringify(infoJson, null, 2);
     }
 
@@ -152,14 +153,14 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
             >
                 {
                     Object.keys(automata).map(auto => (
-                        <Tab label={auto} {...a11yProps(0)} />
+                        <Tab key={auto} label={auto} {...a11yProps(0)} />
                     ))
                 }
             </Tabs>
 
             {
                 Object.keys(automata).map((auto, index) => (
-                    <TabPanel value={value} index={index}>
+                    <TabPanel key={auto} value={value} index={index}>
                         {convertJSON(automata[auto])}
                     </TabPanel>
                 ))

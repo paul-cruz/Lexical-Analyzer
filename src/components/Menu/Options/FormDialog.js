@@ -11,9 +11,12 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import AnalizadorLexico from '../../../classes/Class4';
 import {saveAs} from 'file-saver';
 import serialize from 'serialize-javascript';
+//import AnalizadorLexico from '../../../classes/Class3';
+//import AnalizadorLexico from '../../../classes/Class4';
+import AFD from '../../../classes/AFD';
+import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 
 const useStyles = makeStyles({
     formInput: {
@@ -32,15 +35,15 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     const getAutomatas = () => (
         Object.keys(automata).map(key => (
-            <MenuItem value={key} name={key}>{key}</MenuItem>
+            <MenuItem key={key} value={key} name={key}>{key}</MenuItem>
         ))
     );
 
-    const getAFDs = () => {
-        Object.keys(automata).map(key => (
-            <MenuItem value={key} name={key}>{key}</MenuItem>
+    const getDFAs = () => (
+        Object.keys(automata).filter(autKey => Object.keys(automata[autKey]).every(key => AFD.hasOwnProperty(key))).map(k => (
+            <MenuItem key={k} value={k} name={k}>{k}</MenuItem>
         ))
-    }
+    );
 
     const importExportContent = <DialogContent>
                 <DialogContentText>
@@ -79,7 +82,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                                 fullWidth
                             >
                                 <MenuItem value={null}>Select</MenuItem>
-                                {getAutomatas() /*TODO just select*/}        
+                                {getDFAs()}        
                             </Select>
                         </>
                 }
@@ -293,7 +296,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {automata["AFNLEX1"] ? <MenuItem value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
+                {automata["AFNLEX1"] ? <MenuItem key="AFNLEX1"  value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
             </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>
@@ -310,7 +313,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null} disabled>Select</MenuItem>
-                {getAutomatas()}
+                {getDFAs()}
             </Select>
             <TextField
                 className={classes.formInput}
@@ -412,17 +415,16 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (NFA1 && name) {
                     const dest = automata[NFA1];
                     const newDFA = dest.ConvAFNaAFD();
-                    onAutomataChange({ ...automata, [name]: dest });
-                    console.log(newDFA);
+                    onAutomataChange({ ...automata, [name]: newDFA });
                 }
                 break;
             case "Analyze string":
                 if (symbol) {
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
-                    //console.log();
-                    if (AnalizadorLexico.AnalizLexic(string2Analyze, dest).analisisCadena()) {
-                        alert("It's a valid tring!");
+                    const analyzer = new AnalizadorLexico(string2Analyze, dest);
+                    if (analyzer.analisisCadena()) {
+                        alert("It's a valid string!");
                     } else {
                         alert("It's an invalid string!");
                     }
