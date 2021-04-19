@@ -363,8 +363,8 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (symbol) {
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
-                    console.log(AnalizadorLexico.AnalizLexic(string2Analyze, dest).yylex());
-                    if (true) {
+                    //console.log();
+                    if (AnalizadorLexico.AnalizLexic(string2Analyze, dest).analisisCadena()) {
                         alert("It's a valid tring!");
                     } else {
                         alert("It's an invalid string!");
