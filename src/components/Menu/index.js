@@ -72,9 +72,9 @@ export default function Menu({ automata, onAutomataChange }) {
                 setOpenDialog(true);
                 onChooseDialog("Analyze string");
                 break;
-            case "Test lexical analyzer":
+            case "Import / Export":
                 setOpenDialog(true);
-                onChooseDialog("Test lexical analyzer");
+                onChooseDialog("Import / Export");
                 break;
             default:
                 break;

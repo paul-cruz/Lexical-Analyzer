@@ -12,6 +12,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import AnalizadorLexico from '../../../classes/Class4';
+import {saveAs} from 'file-saver';
+import serialize from 'serialize-javascript';
 
 const useStyles = makeStyles({
     formInput: {
@@ -26,12 +28,62 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     const [symbol, setSymbol] = React.useState('');
     const [NFA1, setNFA1] = React.useState('');
     const [NFA2, setNFA2] = React.useState('');
+    const [JSONAction , setJSONAction] = React.useState("Import");  //Import export action
 
     const getAutomatas = () => (
         Object.keys(automata).map(key => (
             <MenuItem value={key} name={key}>{key}</MenuItem>
         ))
     );
+
+    const getAFDs = () => {
+        Object.keys(automata).map(key => (
+            <MenuItem value={key} name={key}>{key}</MenuItem>
+        ))
+    }
+
+    const importExportContent = <DialogContent>
+                <DialogContentText>
+                    Import / Export
+                </DialogContentText>
+                <Select
+                    className={classes.formInput}
+                    margin="dense"
+                    id="IE"
+                    defaultValue={"Import"}
+                    onChange={(e) => setJSONAction(e.target.value)}
+                    fullWidth
+                >
+                    <MenuItem value={"Import"} selected={true}>Import</MenuItem>
+                    <MenuItem value={"Export"}>Export</MenuItem>
+                </Select>
+                {
+                    JSONAction === "Import" ? 
+                        <>
+                            <DialogContentText>
+                                Choose your file to import
+                            </DialogContentText>
+                            <input type="file" accept="application/JSON" id="JSONFile"/>
+                        </>
+                        :
+                        <>
+                            <DialogContentText>
+                                Select your DFA to export
+                            </DialogContentText>
+                            <Select
+                                className={classes.formInput}
+                                margin="dense"                     
+                                id="AFN1"
+                                defaultValue={NFA1 ? NFA1 : ''}
+                                onChange={(e) => setNFA1(e.target.value)}
+                                fullWidth
+                            >
+                                <MenuItem value={null}>Select</MenuItem>
+                                {getAutomatas() /*TODO just select*/}        
+                            </Select>
+                        </>
+                }
+            </DialogContent>;
 
     const forms = {
         'AddBasic': <DialogContent>
@@ -271,34 +323,27 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         </DialogContent>,
-        'Test lexical analyzer': <DialogContent>
-            <DialogContentText>
-                Test lexical analyzer
-            </DialogContentText>
-            <TextField
-                className={classes.formInput}
-                margin="dense"
-                id="name"
-                label="Test"
-                fullWidth
-
-            />
-        </DialogContent>,
+        'Import / Export': importExportContent
     };
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
 
     useEffect(() => {
         setSelectedForm(forms[keyForm]);
+        function updateForm(){
+            forms["Import / Export"] = importExportContent;
+        }
+
+        updateForm();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [keyForm]);
+    }, [keyForm, JSONAction]);
 
     const handleClose = () => {
         setOpen(false);
         setDialog(null);
     };
 
-    const handleForm = (e) => {
+    const handleForm = async (e) => {
         setOpen(false);
         setDialog(null);
 
@@ -384,7 +429,22 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
                 }
                 break;
-            case "Test lexical analyzer":
+            case "Import / Export":
+                if(JSONAction === "Import"){
+                    const fr = new FileReader();
+                    const name = document.getElementById("JSONFile").files[0].name.split(".")[0];
+                    fr.onload = function(){
+                        onAutomataChange({...automata, [name]: eval("(" +fr.result + ")")});
+                    }
+                    fr.readAsText(document.getElementById("JSONFile").files[0]);
+                } else {
+                    const contenidoSerializable = serialize(automata[NFA1]);
+                    const myblob = new Blob([contenidoSerializable], {
+                        type: 'application/json'
+                    });
+
+                    saveAs(myblob, `${NFA1}.json`);
+                }
                 break;
             default:
                 break;

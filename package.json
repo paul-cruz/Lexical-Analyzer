@@ -8,9 +8,12 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "file-saver": "^2.0.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "save-file": "^2.3.1",
+    "serialize-javascript": "^5.0.1",
     "vis-network": "^9.0.4",
     "web-vitals": "^1.1.1"
   },

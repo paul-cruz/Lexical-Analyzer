@@ -7,7 +7,7 @@ import PortableWifiOffOutlinedIcon from '@material-ui/icons/PortableWifiOffOutli
 import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BorderVerticalOutlinedIcon from '@material-ui/icons/BorderVerticalOutlined';
 import HdrStrongOutlinedIcon from '@material-ui/icons/HdrStrongOutlined';
-import AllInclusiveOutlinedIcon from '@material-ui/icons/AllInclusiveOutlined';
+import ImportExportIcon from '@material-ui/icons/ImportExport';
 
 export const menuOptions = [{
     label: 'Add Basic',
@@ -37,7 +37,7 @@ export const menuOptions = [{
     label: 'Analyze string',
     icon: <HdrStrongOutlinedIcon />
 },{
-    label: 'Test lexical analyzer',
-    icon: <AllInclusiveOutlinedIcon />
+    label: 'Import / Export',
+    icon: <ImportExportIcon />
 }
 ];

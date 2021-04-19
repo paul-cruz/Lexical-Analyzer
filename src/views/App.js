@@ -25,7 +25,9 @@ export default function App() {
   const drawGraphs = () => {
     var nodes = [];
     var edges = [];
+
     const element = selectedAutomata ? automata[selectedAutomata] : Object.keys(automata).length > 0 ? Object.values(automata)[0] : null;
+    console.log(element);
     if (element) {
       var newNode;
       element.EdosAFN.forEach((edo) => {
