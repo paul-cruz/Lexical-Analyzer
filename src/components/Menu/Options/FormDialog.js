@@ -11,7 +11,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import AnalizadorLexico from '../../../classes/Class4';
+//import AnalizadorLexico from '../../../classes/Class3';
+//import AnalizadorLexico from '../../../classes/Class4';
+import AFD from '../../../classes/AFD';
+import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 
 const useStyles = makeStyles({
     formInput: {
@@ -34,7 +37,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     );
 
     const getDFAs = () => (
-        Object.keys(automata).filter(autKey => Object.keys(automata[autKey]).every(key => AnalizadorLexico.AFD.hasOwnProperty(key))).map(k => (
+        Object.keys(automata).filter(autKey => Object.keys(automata[autKey]).every(key => AFD.hasOwnProperty(key))).map(k => (
             <MenuItem value={k} name={k}>{k}</MenuItem>
         ))
     );
@@ -380,8 +383,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (symbol) {
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
-                    if (AnalizadorLexico.AnalizLexic(string2Analyze, dest).analisisCadena()) {
-                        alert("It's a valid tring!");
+                    const analyzer = new AnalizadorLexico(string2Analyze, dest);
+                    if (analyzer.analisisCadena()) {
+                        alert("It's a valid string!");
                     } else {
                         alert("It's an invalid string!");
                     }

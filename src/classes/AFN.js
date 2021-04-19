@@ -1,7 +1,8 @@
 import Estado from './Estado';
 import Transicion from './Transicion';
 import SimbolosEspeciales from './SimbolosEspeciales';
-import AnalizadorLexico from './Class4';   //AFD
+import AFD from './AFD';
+//import AnalizadorLexico from './Class4';   //AFD
 
 class Stack {
     constructor() {
@@ -428,7 +429,7 @@ class AFN {
                 I.TransicionesAFD["Token"] = -1;
             }
 
-            AutFD = AnalizadorLexico.AFD;
+            AutFD = AFD;
             AutFD.CardAlfabeto = CardAlfabeto;
 
             i = 0;
@@ -449,7 +450,7 @@ class AFN {
                 AutFD.TransicionesAFD[I.j]["Token"] = I.TransicionesAFD["Token"];
             });
         });
-
+        console.log(AutFD);
         return AutFD;
     }
 }

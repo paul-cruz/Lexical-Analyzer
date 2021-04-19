@@ -5,7 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import AutomataList from './../components/AutomataList';
 import AutomataGraphs from './../components/AutomataGraphs';
-import AnalizadorLexico from '../classes/Class4';
+//import AnalizadorLexico from '../classes/Class4';
+import AFD from '../classes/AFD';
 
 const useStyles = makeStyles({
   grid: {
@@ -29,7 +30,7 @@ export default function App() {
     const element = selectedAutomata ? automata[selectedAutomata] : Object.keys(automata).length > 0 ? Object.values(automata)[0] : null;
     if (element) {
       var newNode;
-      if (Object.keys(element).every(key => AnalizadorLexico.AFD.hasOwnProperty(key))) {
+      if (Object.keys(element).every(key => AFD.hasOwnProperty(key))) {
         Object.values(element.TransicionesAFD).forEach((edo, index) => {
           newNode = { id: index, label: `${index}` };
           if (index === 0) {
