@@ -435,7 +435,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if(JSONAction === "Import"){
                     const fr = new FileReader();
                     const name = document.getElementById("JSONFile").files[0].name.split(".")[0];
-                    fr.onload = function(){
+                    fr.onload = function(){// eslint-disable-next-line
                         onAutomataChange({...automata, [name]: eval("(" +fr.result + ")")});
                     }
                     fr.readAsText(document.getElementById("JSONFile").files[0]);
