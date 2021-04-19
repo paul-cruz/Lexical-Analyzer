@@ -32,13 +32,13 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
 
     const getAutomatas = () => (
         Object.keys(automata).map(key => (
-            <MenuItem value={key} name={key}>{key}</MenuItem>
+            <MenuItem key={key} value={key} name={key}>{key}</MenuItem>
         ))
     );
 
     const getDFAs = () => (
         Object.keys(automata).filter(autKey => Object.keys(automata[autKey]).every(key => AFD.hasOwnProperty(key))).map(k => (
-            <MenuItem value={k} name={k}>{k}</MenuItem>
+            <MenuItem key={k} value={k} name={k}>{k}</MenuItem>
         ))
     );
 
@@ -250,7 +250,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null}>Select</MenuItem>
-                {automata["AFNLEX1"] ? <MenuItem value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
+                {automata["AFNLEX1"] ? <MenuItem key="AFNLEX1"  value="AFNLEX1" name="AFNLEX1">AFNLEX1</MenuItem> : null}
             </Select>
         </DialogContent>,
         'Analyze string': <DialogContent>

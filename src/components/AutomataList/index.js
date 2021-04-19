@@ -40,7 +40,7 @@ function TabPanel(props) {
         >
             {value === index && (
                 <Box p={1} >
-                    <Typography className={classes.typography}><pre>{changeJSONInfo(children)}</pre></Typography>
+                    <Typography component={'div'} className={classes.typography}><pre>{changeJSONInfo(children)}</pre></Typography>
                 </Box>
             )}
         </div>
@@ -153,14 +153,14 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
             >
                 {
                     Object.keys(automata).map(auto => (
-                        <Tab label={auto} {...a11yProps(0)} />
+                        <Tab key={auto} label={auto} {...a11yProps(0)} />
                     ))
                 }
             </Tabs>
 
             {
                 Object.keys(automata).map((auto, index) => (
-                    <TabPanel value={value} index={index}>
+                    <TabPanel key={auto} value={value} index={index}>
                         {convertJSON(automata[auto])}
                     </TabPanel>
                 ))
