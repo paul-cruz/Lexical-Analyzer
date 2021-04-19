@@ -1,5 +1,5 @@
-/*import SimbolosEspeciales from './SimbolosEspeciales';
-import AFD from './Class4';*/
+//import SimbolosEspeciales from './SimbolosEspeciales';
+//import AFD from './Class4';
 
 /*class Stack {
     constructor() {
@@ -28,29 +28,15 @@ var AnalizadorLexico = {
         this.FinLexema = -1;
         this.CaracterActual = (sigma && AutAFD) ? 0: -1;
         this.token = -1;
-        /*this.Pila = new Stack();
-        this.Pila.clear();*/
         this.AutomataFD = AutAFD ? AutAFD : null;
         this.EstadoActual = 0;
         this.CaracterAcepPrevio = -1;
-        this.Lexemas = [];
-        this.tokens = [];
 
-        /*this.yylex = function () {
-            this.Pila.push(this.CaracterActual);
-            if (this.CaracterActual > this.CadenaSigma.length)
-                return SimbolosEspeciales.FIN;
-            this.IniLexema = this.CaracterActual;
-            return 1;
-        }*/
 
         this.yylex = function(){
-            var lex = "";
-            let lexTok = {};
-            this.IniLexema = 0;
             while(this.CaracterActual<this.CadenaSigma.length){
-                var indice = this.AutomataFD.TransicionesAFD[this.EstadoActual].indexOf(this.CadenaSigma.charAt(this.CaracterActual));
-                if(indice !== -1){
+                var indice = this.AutomataFD.TransicionesAFD[this.EstadoActual][this.AutomataFD.ArrAlfabeto.indexOf(this.CadenaSigma.charAt(this.CaracterActual))];
+                if(typeof indice !== "undefined"){
                     this.EstadoActual = indice;
                     var tokAFD = this.AutomataFD.TransicionesAFD[this.AutomataFD.cardAlfabeto][indice]
                     if(tokAFD !== -1){
@@ -63,17 +49,32 @@ var AnalizadorLexico = {
                         return -1;
                     }else{
                         this.FinLexema = this.CaracterAcepPrevio;
-                        lex = this.CadenaSigma.substring(this.IniLexema,this.FinLexema);
-                        lexTok[lex] = this.token;
                         this.EstadoActual = 0;
                         this.CaracterActual = ++this.CaracterAcepPrevio;
                         this.IniLexema = this.CaracterActual;
+                        return this.token;
                     }
                 }
             }
-            lex = this.CadenaSigma.substring(this.IniLexema,this.CadenaSigma.length-1);
-            lexTok[lex] = this.token;
+            this.FinLexema = this.CadenaSigma.length-1;
             return 0;
+        }
+
+        this.getCadena = function (){
+            var lex = this.CadenaSigma.substring(this.IniLexema,this.FinLexema);
+            return lex;
+        }
+
+        this.analisisCadena = function(){
+            var estado;
+            while((estado = this.yylex) !== 0){
+                if(estado === -1){
+                    return false;
+                }
+                console.log("Lexema: ",this.getCadena);
+                console.log("Token: ",this.token);
+            }
+            return true;
         }
     }
     
