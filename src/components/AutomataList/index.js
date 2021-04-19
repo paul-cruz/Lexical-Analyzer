@@ -87,7 +87,6 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
 
     const convertJSON = (jsonContent) => {
         const infoJson = { edoIni: null, edosAcept: [], transiciones: {}, alfabeto: [] };
-        console.log(jsonContent);
         Object.keys(jsonContent).forEach((key) => {
             switch (key) {
                 case "EdoIni":  //inicial
@@ -102,7 +101,6 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
 
                     jsonContent[key].forEach(trans => {
                         trans.Trans.forEach(transicion => {
-                            console.log(transicion);
                             const simbInf = transicion.__simbInf__;
                             const simbSup = transicion.__simbSup__;
                             const edoTrans = transicion.__edo__.IdEstado;
@@ -136,7 +134,6 @@ export default function AutomataList({ automata, setSelectedAutomata }) {
                     break;
             }
         });
-        //console.log(JSON.stringify(infoJson, null, 2));
         return JSON.stringify(infoJson, null, 2);
     }
 

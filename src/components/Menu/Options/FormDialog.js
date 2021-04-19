@@ -33,6 +33,12 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         ))
     );
 
+    const getDFAs = () => (
+        Object.keys(automata).filter(autKey => Object.keys(automata[autKey]).every(key => AnalizadorLexico.AFD.hasOwnProperty(key))).map(k => (
+            <MenuItem value={k} name={k}>{k}</MenuItem>
+        ))
+    );
+
     const forms = {
         'AddBasic': <DialogContent>
             <DialogContentText>
@@ -258,7 +264,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             >
                 <MenuItem value={null} disabled>Select</MenuItem>
-                {getAutomatas()}
+                {getDFAs()}
             </Select>
             <TextField
                 className={classes.formInput}
@@ -367,15 +373,13 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 if (NFA1 && name) {
                     const dest = automata[NFA1];
                     const newDFA = dest.ConvAFNaAFD();
-                    onAutomataChange({ ...automata, [name]: dest });
-                    console.log(newDFA);
+                    onAutomataChange({ ...automata, [name]: newDFA });
                 }
                 break;
             case "Analyze string":
                 if (symbol) {
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
-                    //console.log();
                     if (AnalizadorLexico.AnalizLexic(string2Analyze, dest).analisisCadena()) {
                         alert("It's a valid tring!");
                     } else {
