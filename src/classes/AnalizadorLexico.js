@@ -68,12 +68,11 @@ class AnalizadorLexico {
             this.InCaracterActual = this.IniLexema + 1;
             this.Lexema = this.CadenaSigma.substring(this.IniLexema,this.IniLexema+1);
             this.token = 2000;
-            console.log("L",this.Lexema);
-            return this.token;
+            return parseInt(this.token);
         }
         this.Lexema = this.CadenaSigma.substring(this.IniLexema,this.FinLexema+1);
         this.InCaracterActual = this.FinLexema + 1;
-        return this.token;
+        return parseInt(this.token);
     }
 
     undoToken(){
@@ -106,7 +105,6 @@ class AnalizadorLexico {
             lex_tokens[lex] = t;
             
         }
-        console.log(lex_tokens);
         return true;
     }
 }
