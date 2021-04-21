@@ -406,7 +406,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         switch (keyForm) {
             case "AddBasic":
                 const newAFN = new AFN();
-                if (symbol.includes('-')&&symbol.length>1) {
+                if (symbol.includes('-') && symbol.length > 1) {
                     var range = symbol.split('-');
                     newAFN.CrearAFNBasicoParams(range[0], range[1]);
                 } else {
@@ -507,8 +507,10 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             case "Calculator Eval":
                 if (NFA1 && symbol) {
                     const evaluator = new CalculatorEval(automata[NFA1], symbol);
-                    const result = evaluator.initEval() ? 'valid' : 'invalid';
-                    alert(`${symbol} is a ${result} math expression!`);
+                    const valid = evaluator.initEval();
+                    const validation = valid ? 'valid' : 'invalid';
+                    const result = valid ? `evaluated: ${evaluator.result}` : '';
+                    alert(`${symbol} is a ${validation} math expression! ${result}`);
                 }
                 break;
             default:

@@ -11,11 +11,11 @@ export default class CalculatorEval {
     }
 
     initEval() {
-        var token, v;
+        var token, v = [];
         if (this.E(v)) {
             token = this.lexic.yylex();
             if (token === SimbolosEspeciales.FIN) {
-                this.result = v;
+                this.result = v[0];
                 return true;
             }
         }
@@ -31,11 +31,11 @@ export default class CalculatorEval {
     }
 
     Ep(v) {
-        var token, v1;
+        var token, v1 = [];
         token = this.lexic.yylex();
         if (token === Tokens.MAS || token === Tokens.MENOS) {
             if (this.T(v1)) {
-                v = v + (token === Tokens.MAS ? v1 : -v1);
+                v[0] = v[0] + (token === Tokens.MAS ? v1[0] : -v1[0]);
                 if (this.Ep(v))
                     return true;
             }
@@ -54,11 +54,11 @@ export default class CalculatorEval {
     }
 
     Tp(v) {
-        var token, v1;
+        var token, v1 = [];
         token = this.lexic.yylex();
         if (token === Tokens.PROD || token === Tokens.DIV) {
             if (this.F(v1)) {
-                v = v * (token === Tokens.PROD ? v1 : 1.0 / v1);
+                v[0] = v[0] * (token === Tokens.PROD ? v1[0] : 1.0 / v1[0]);
                 if (this.Tp(v))
                     return true;
             }
@@ -81,7 +81,7 @@ export default class CalculatorEval {
                 return false;
 
             case Tokens.NUM:
-                v = parseFloat(this.lexic.Lexema);
+                v[0] = parseFloat(this.lexic.Lexema);
                 return true;
 
             default:
