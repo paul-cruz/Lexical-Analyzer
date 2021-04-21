@@ -1,5 +1,6 @@
 import AnalizadorLexico from './AnalizadorLexico';
 import { Tokens } from './Tokens';
+import SimbolosEspeciales from './SimbolosEspeciales';
 
 export default class CalculatorEval {
 
@@ -13,7 +14,7 @@ export default class CalculatorEval {
         var token, v;
         if (this.E(v)) {
             token = this.lexic.yylex();
-            if (token === 0) {
+            if (token === SimbolosEspeciales.FIN) {
                 this.result = v;
                 return true;
             }
@@ -82,7 +83,6 @@ export default class CalculatorEval {
             case Tokens.NUM:
                 v = parseFloat(this.lexic.Lexema);
                 return true;
-
             default:
                 break;
         }
