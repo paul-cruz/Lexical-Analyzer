@@ -1,6 +1,6 @@
 import AnalizadorLexico from './AnalizadorLexico';
-import { Tokens } from './Tokens';
 import SimbolosEspeciales from './SimbolosEspeciales';
+import { Tokens } from './Tokens';
 
 export default class CalculatorEval {
 
@@ -83,6 +83,7 @@ export default class CalculatorEval {
             case Tokens.NUM:
                 v = parseFloat(this.lexic.Lexema);
                 return true;
+
             default:
                 break;
         }
