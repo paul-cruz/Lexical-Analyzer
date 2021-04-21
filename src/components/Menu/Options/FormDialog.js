@@ -406,7 +406,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         switch (keyForm) {
             case "AddBasic":
                 const newAFN = new AFN();
-                if (symbol.includes('-')) {
+                if (symbol.includes('-')&&symbol.length>1) {
                     var range = symbol.split('-');
                     newAFN.CrearAFNBasicoParams(range[0], range[1]);
                 } else {
