@@ -4,7 +4,7 @@ import { Tokens } from './Tokens';
 export default class CalculatorEval {
 
     constructor(afd, exp) {
-        this.exp = exp
+        this.exp = exp;
         this.lexic = new AnalizadorLexico(this.exp, afd);
         this.result = 0.0;
     }

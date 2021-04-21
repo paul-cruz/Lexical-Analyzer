@@ -45,11 +45,11 @@ class AnalizadorLexico {
         this.FinLexema = -1;
         this.token = -1;
         var banderaBreak = false;
-        while(this.InCaracterActual < this.CadenaSigma.length && !banderaBreak) {
+        while(this.InCaracterActual < this.CadenaSigma.length && banderaBreak===false) {
             this.CaracterActual = this.CadenaSigma.charAt(this.InCaracterActual);
             this.EdoTransicion = this.AutomataFD.TransicionesAFD[this.EstadoActual][this.CaracterActual];
             if(typeof this.EdoTransicion !== "undefined"){
-                var tokAFD = this.AutomataFD.TransicionesAFD[this.EstadoActual]["Token"];
+                var tokAFD = this.AutomataFD.TransicionesAFD[this.EdoTransicion]["Token"];
                 if(tokAFD !== -1){
                     this.PasoPorEdoAcept = true;
                     this.token =tokAFD;
