@@ -76,6 +76,10 @@ export default function Menu({ automata, onAutomataChange }) {
                 setOpenDialog(true);
                 onChooseDialog("Import / Export");
                 break;
+            case "Calculator Eval":
+                setOpenDialog(true);
+                onChooseDialog("Calculator Eval");
+                break;
             default:
                 break;
         }

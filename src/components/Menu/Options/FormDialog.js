@@ -17,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import { saveAs } from 'file-saver';
 import serialize from 'serialize-javascript';
 import AFD from '../../../classes/AFD';
+import CalculatorEval from '../../../classes/CalculatorEval';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 
 const useStyles = makeStyles((theme) => ({
@@ -311,7 +312,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             <DialogContentText>
                 Introduce a string to analyze it
             </DialogContentText>
-            <InputLabel>NFA</InputLabel>
+            <InputLabel>DFA</InputLabel>
             <Select
                 className={classes.formInput}
                 margin="dense"
@@ -334,7 +335,34 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         </DialogContent>,
-        'Import / Export': importExportContent
+        'Import / Export': importExportContent,
+        'Calculator Eval': <DialogContent>
+            <DialogContentText>
+                Introduce a math expresion to analyze it
+        </DialogContentText>
+            <InputLabel>DFA</InputLabel>
+            <Select
+                className={classes.formInput}
+                margin="dense"
+                id="AFN1"
+                defaultValue={NFA1 ? NFA1 : ''}
+                onChange={(e) => setNFA1(e.target.value)}
+                fullWidth
+            >
+                <MenuItem value={null} disabled>Select</MenuItem>
+                {getDFAs()}
+            </Select>
+            <TextField
+                className={classes.formInput}
+                autoFocus
+                margin="dense"
+                id="expression"
+                label="Math expression"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+            />
+        </DialogContent>,
     };
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
@@ -473,6 +501,14 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     });
 
                     saveAs(myblob, `${NFA1}.json`);
+                }
+                break;
+
+            case "Calculator Eval":
+                if (NFA1 && symbol) {
+                    const evaluator = new CalculatorEval(automata[NFA1], symbol);
+                    const result = evaluator.initEval() ? 'valid' : 'invalid';
+                    alert(`${symbol} is a ${result} math expression!`);
                 }
                 break;
             default:

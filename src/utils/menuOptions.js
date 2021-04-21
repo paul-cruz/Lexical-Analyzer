@@ -8,36 +8,40 @@ import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BorderVerticalOutlinedIcon from '@material-ui/icons/BorderVerticalOutlined';
 import HdrStrongOutlinedIcon from '@material-ui/icons/HdrStrongOutlined';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
+import ExposureIcon from '@material-ui/icons/Exposure';
 
 export const menuOptions = [{
     label: 'Add Basic',
     icon: <AddCircleOutlinedIcon />
-},{
+}, {
     label: 'Join',
     icon: <MergeTypeOutlinedIcon />
-},{
+}, {
     label: 'Concat',
     icon: <CompareArrowsOutlinedIcon />
-},{
+}, {
     label: 'Positive Closure',
     icon: <AddOutlinedIcon />
-},{
+}, {
     label: 'Kleene Closure',
     icon: <StarOutlineOutlinedIcon />
-},{
+}, {
     label: 'Once or none',
     icon: <PortableWifiOffOutlinedIcon />
-},{
+}, {
     label: 'Union for lexical analyzer',
     icon: <BlurOnOutlinedIcon />
-},{
+}, {
     label: 'Convert NFA to DFA',
     icon: <BorderVerticalOutlinedIcon />
-},{
+}, {
     label: 'Analyze string',
     icon: <HdrStrongOutlinedIcon />
-},{
+}, {
     label: 'Import / Export',
     icon: <ImportExportIcon />
+}, {
+    label: 'Calculator Eval',
+    icon: <ExposureIcon />
 }
 ];
