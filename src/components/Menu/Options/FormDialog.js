@@ -510,7 +510,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const valid = evaluator.initEval();
                     const validation = valid ? 'valid' : 'invalid';
                     const result = valid ? `evaluated: ${evaluator.result}` : '';
-                    alert(`${symbol} is a ${validation} math expression! ${result}`);
+                    alert(`${symbol} is a ${validation} math expression! ${result}\nSuffix notation: ${evaluator.suffixExp}`);
                 }
                 break;
             default:

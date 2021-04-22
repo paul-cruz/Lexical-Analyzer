@@ -8,35 +8,38 @@ export default class CalculatorEval {
         this.exp = exp;
         this.lexic = new AnalizadorLexico(this.exp, afd);
         this.result = 0.0;
+        this.suffixExp = "";
     }
 
     initEval() {
-        var token, v = [];
-        if (this.E(v)) {
+        var token, v = [], suffix = [""];
+        if (this.E(v, suffix)) {
             token = this.lexic.yylex();
             if (token === SimbolosEspeciales.FIN) {
                 this.result = v[0];
+                this.suffixExp = suffix[0];
                 return true;
             }
         }
         return false;
     }
 
-    E(v) {
-        if (this.T(v)) {
-            if (this.Ep(v))
+    E(v, suffix) {
+        if (this.T(v, suffix)) {
+            if (this.Ep(v, suffix))
                 return true;
         }
         return false;
     }
 
-    Ep(v) {
-        var token, v1 = [];
+    Ep(v, suffix) {
+        var token, v1 = [], suffix2 = [""];
         token = this.lexic.yylex();
         if (token === Tokens.MAS || token === Tokens.MENOS) {
-            if (this.T(v1)) {
+            if (this.T(v1, suffix2)) {
                 v[0] = v[0] + (token === Tokens.MAS ? v1[0] : -v1[0]);
-                if (this.Ep(v))
+                suffix[0] += ` ${suffix2[0]} ${token === Tokens.MAS ? '+' : '-'}`;
+                if (this.Ep(v, suffix))
                     return true;
             }
             return false;
@@ -45,21 +48,22 @@ export default class CalculatorEval {
         return true;
     }
 
-    T(v) {
-        if (this.F(v)) {
-            if (this.Tp(v))
+    T(v, suffix) {
+        if (this.F(v, suffix)) {
+            if (this.Tp(v, suffix))
                 return true;
         }
         return false;
     }
 
-    Tp(v) {
-        var token, v1 = [];
+    Tp(v, suffix) {
+        var token, v1 = [], suffix2 = [""];
         token = this.lexic.yylex();
         if (token === Tokens.PROD || token === Tokens.DIV) {
-            if (this.F(v1)) {
+            if (this.F(v1, suffix2)) {
                 v[0] = v[0] * (token === Tokens.PROD ? v1[0] : 1.0 / v1[0]);
-                if (this.Tp(v))
+                suffix[0] += ` ${suffix2[0]} ${token === Tokens.PROD ? '*' : '/'}`;
+                if (this.Tp(v, suffix))
                     return true;
             }
             return false;
@@ -68,12 +72,12 @@ export default class CalculatorEval {
         return true;
     }
 
-    F(v) {
+    F(v, suffix) {
         var token;
         token = this.lexic.yylex();
         switch (token) {
             case Tokens.PAR_I:
-                if (this.E(v)) {
+                if (this.E(v, suffix)) {
                     token = this.lexic.yylex();
                     if (token === Tokens.PAR_D)
                         return true;
@@ -82,6 +86,7 @@ export default class CalculatorEval {
 
             case Tokens.NUM:
                 v[0] = parseFloat(this.lexic.Lexema);
+                suffix[0] = this.lexic.Lexema;
                 return true;
 
             default:
