@@ -380,7 +380,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         <DialogContentText>
-            Name of your FNA
+            Name of your NFA
         </DialogContentText>
         <TextField
             className={classes.formInput}
