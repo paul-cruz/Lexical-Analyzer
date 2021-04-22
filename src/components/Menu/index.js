@@ -80,6 +80,10 @@ export default function Menu({ automata, onAutomataChange }) {
                 setOpenDialog(true);
                 onChooseDialog("Calculator Eval");
                 break;
+            case "Convert Regex to NFA":
+                setOpenDialog(true);
+                onChooseDialog("Convert Regex to NFA");
+                break;
             default:
                 break;
         }

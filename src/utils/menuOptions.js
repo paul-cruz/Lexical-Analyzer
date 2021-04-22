@@ -9,6 +9,7 @@ import BorderVerticalOutlinedIcon from '@material-ui/icons/BorderVerticalOutline
 import HdrStrongOutlinedIcon from '@material-ui/icons/HdrStrongOutlined';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import ExposureIcon from '@material-ui/icons/Exposure';
+import SpellcheckIcon from '@material-ui/icons/Spellcheck';
 
 export const menuOptions = [{
     label: 'Add Basic',
@@ -43,5 +44,8 @@ export const menuOptions = [{
 }, {
     label: 'Calculator Eval',
     icon: <ExposureIcon />
+}, {
+    label: 'Convert Regex to NFA',
+    icon: <SpellcheckIcon/>
 }
 ];

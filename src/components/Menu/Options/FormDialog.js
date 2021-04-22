@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import AFN from './../../../classes/AFN';
 import List from '@material-ui/core/List';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
@@ -16,9 +15,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { saveAs } from 'file-saver';
 import serialize from 'serialize-javascript';
+
+import AFN from './../../../classes/AFN';
 import AFD from '../../../classes/AFD';
 import CalculatorEval from '../../../classes/CalculatorEval';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
+import Regex2DFA from '../../../classes/Regex2DFA';
 
 const useStyles = makeStyles((theme) => ({
     formInput: {
@@ -363,6 +365,34 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         </DialogContent>,
+        'Convert Regex to NFA': <DialogContent>
+        <DialogContentText>
+            Introduce a RegEx to convert to NFA
+            </DialogContentText>
+            <TextField
+                className={classes.formInput}
+                autoFocus
+                margin="dense"
+                id="expression"
+                label="RegEx"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+            />
+        <DialogContentText>
+            Name of your FNA
+        </DialogContentText>
+        <TextField
+            className={classes.formInput}
+            autoFocus
+            margin="dense"
+            id="expression"
+            label="RegEx"
+            defaultValue={name}
+            onChange={(e) => { setName(e.target.value) }}
+            fullWidth
+        />
+    </DialogContent>,
     };
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
@@ -511,6 +541,13 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const validation = valid ? 'valid' : 'invalid';
                     const result = valid ? `evaluated: ${evaluator.result}` : '';
                     alert(`${symbol} is a ${validation} math expression! ${result}\nSuffix notation: ${evaluator.suffixExp}`);
+                }
+                break;
+            case "Convert Regex to NFA":
+                if(symbol && name) {
+                    const regex2DFA = new Regex2DFA(symbol);
+                    regex2DFA.convert();
+                    onAutomataChange({ ...automata, [name]: regex2DFA.result });
                 }
                 break;
             default:
