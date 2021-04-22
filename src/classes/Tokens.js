@@ -13,6 +13,7 @@ export const Tokens = {
     ONCE_NONE: 120,
     SQB_L: 130,
     SQB_R: 140,
-    SYMBOL: 100,
-    DASH: 110
+    DASH: 150,
+    SYMBOL: 160
+    
 }
