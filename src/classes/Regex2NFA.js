@@ -2,12 +2,13 @@ import AFN from './AFN';
 import AnalizadorLexico from './AnalizadorLexico';
 import SimbolosEspeciales from './SimbolosEspeciales';
 import { Tokens } from './Tokens';
+import { REGEX } from '../utils/REGEX';
 
 export default class Regex2NFA {
 
     constructor(exp) {
         this.exp = exp;
-        //this.lexic = new AnalizadorLexico(this.exp, afn);
+        this.lexic = new AnalizadorLexico(this.exp, REGEX);
         this.result = null;
     }
 
@@ -117,19 +118,20 @@ export default class Regex2NFA {
             case Tokens.SQB_L:
                 var s1, s2;
                 token = this.lexic.yylex();
-                if (token === Tokens.DASH) {
+                if (token === Tokens.SYMBOL) {
                     s1 = this.lexic.Lexema.replace('\\', '');
                     token = this.lexic.yylex();
-                    if (token === Tokens.SYMBOL) {
-                        s2 = this.lexic.Lexema.replace('\\', '');
+                    if (token === Tokens.DASH) {
                         token = this.lexic.yylex();
-                        if (token === Tokens.SQB_R) {
-                            afn = new AFN();
-                            afn.CrearAFNBasicoParams(s1, s2);
-                            return true;
+                        if (token === Tokens.SYMBOL) {
+                            s2 = this.lexic.Lexema.replace('\\', '');
+                            token = this.lexic.yylex();
+                            if (token === Tokens.SQB_R) {
+                                afn.CrearAFNBasicoParams(s1, s2);
+                                return true;
+                            }
                         }
                     }
-
                 }
                 return false;
 

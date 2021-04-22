@@ -366,9 +366,18 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             />
         </DialogContent>,
         'Convert Regex to NFA': <DialogContent>
-        <DialogContentText>
-            Introduce a RegEx to convert to NFA
+            <DialogContentText>
+                Introduce a RegEx to convert to NFA and its name
             </DialogContentText>
+            <TextField
+                className={classes.formInput}
+                margin="dense"
+                id="name"
+                label="Name"
+                defaultValue={name}
+                onChange={(e) => { setName(e.target.value) }}
+                fullWidth
+            />
             <TextField
                 className={classes.formInput}
                 autoFocus
@@ -379,20 +388,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 onChange={(e) => { setSymbol(e.target.value) }}
                 fullWidth
             />
-        <DialogContentText>
-            Name of your NFA
-        </DialogContentText>
-        <TextField
-            className={classes.formInput}
-            autoFocus
-            margin="dense"
-            id="expression"
-            label="RegEx"
-            defaultValue={name}
-            onChange={(e) => { setName(e.target.value) }}
-            fullWidth
-        />
-    </DialogContent>,
+        </DialogContent>,
     };
 
     const [selectedForm, setSelectedForm] = React.useState(forms[keyForm]);
@@ -418,9 +414,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 Generated Lexemes for the {str}
             </DialogContentText>
             <List className={classes.root}>
-                {Object.keys(lex).map((key) => (
-                    <ListItem button key={key}>
-                        <ListItemText primary={`Lexeme: ${key}  ->  TOKEN: ${lex[key]}`} />
+                {lex.map((obj, index) => (
+                    <ListItem button key={index}>
+                        <ListItemText primary={`Lexeme: ${obj.lex}  ->  TOKEN: ${obj.tok}`} />
                     </ListItem>
                 ))}
             </List>
@@ -506,7 +502,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const dest = automata[NFA1];
                     const string2Analyze = symbol;
                     const analyzer = new AnalizadorLexico(string2Analyze, dest);
-                    const lex_tokens = {};
+                    const lex_tokens = [];
                     if (analyzer.analisisCadena(lex_tokens)) {
                         setLexemesContent(lex_tokens, 'valid string');
                     } else {
@@ -544,7 +540,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 }
                 break;
             case "Convert Regex to NFA":
-                if(symbol && name) {
+                if (symbol && name) {
                     const regex2NFA = new Regex2NFA(symbol);
                     regex2NFA.convert();
                     onAutomataChange({ ...automata, [name]: regex2NFA.result });
