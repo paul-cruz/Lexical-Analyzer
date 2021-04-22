@@ -99,6 +99,7 @@ export default class Regex2NFA {
         }
         if (this.Cp(afn))
             return true;
+        return false;
     }
 
     F(afn) {
@@ -113,14 +114,27 @@ export default class Regex2NFA {
                 }
                 return false;
 
-            case Tokens.SYMBOL:
-                var isRange = this.lexic.Lexema.includes('-') && this.lexic.Lexema.length > 1;
-                if (isRange) {
-                    var symbols = this.lexic.Lexema.split('-');
-                    afn.CrearAFNBasicoParams(symbols[0], symbols[1]);
-                } else {
-                    afn.CrearAFNBasico(this.lexic.Lexema);
+            case Tokens.SQB_L:
+                var s1, s2;
+                token = this.lexic.yylex();
+                if (token === Tokens.DASH) {
+                    s1 = this.lexic.Lexema.replace('\\', '');
+                    token = this.lexic.yylex();
+                    if (token === Tokens.SYMBOL) {
+                        s2 = this.lexic.Lexema.replace('\\', '');
+                        token = this.lexic.yylex();
+                        if (token === Tokens.SQB_R) {
+                            afn = new AFN();
+                            afn.CrearAFNBasicoParams(s1, s2);
+                            return true;
+                        }
+                    }
+
                 }
+                return false;
+
+            case Tokens.SYMBOL:
+                afn.CrearAFNBasico(this.lexic.Lexema);
                 return true;
 
             default:
