@@ -20,7 +20,7 @@ import AFN from './../../../classes/AFN';
 import AFD from '../../../classes/AFD';
 import CalculatorEval from '../../../classes/CalculatorEval';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
-import Regex2DFA from '../../../classes/Regex2DFA';
+import Regex2NFA from '../../../classes/Regex2NFA';
 
 const useStyles = makeStyles((theme) => ({
     formInput: {
@@ -545,9 +545,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 break;
             case "Convert Regex to NFA":
                 if(symbol && name) {
-                    const regex2DFA = new Regex2DFA(symbol);
-                    regex2DFA.convert();
-                    onAutomataChange({ ...automata, [name]: regex2DFA.result });
+                    const regex2NFA = new Regex2NFA(symbol);
+                    regex2NFA.convert();
+                    onAutomataChange({ ...automata, [name]: regex2NFA.result });
                 }
                 break;
             default:

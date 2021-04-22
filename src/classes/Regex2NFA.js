@@ -3,7 +3,7 @@ import AnalizadorLexico from './AnalizadorLexico';
 import SimbolosEspeciales from './SimbolosEspeciales';
 import { Tokens } from './Tokens';
 
-export default class Regex2DFA {
+export default class Regex2NFA {
 
     constructor(exp) {
         this.exp = exp;
