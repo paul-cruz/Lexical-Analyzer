@@ -542,8 +542,11 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
             case "Convert Regex to NFA":
                 if (symbol && name) {
                     const regex2NFA = new Regex2NFA(symbol);
-                    regex2NFA.convert();
-                    onAutomataChange({ ...automata, [name]: regex2NFA.result });
+                    const valid = regex2NFA.convert();
+                    if (valid)
+                        onAutomataChange({ ...automata, [name]: regex2NFA.result });
+                    else
+                        alert("REGEX invalid!");
                 }
                 break;
             default:
