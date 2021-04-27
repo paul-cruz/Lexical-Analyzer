@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AutomataList from './../components/AutomataList';
 import AutomataGraphs from './../components/AutomataGraphs';
 import AFD from '../classes/AFD';
+import SimbolosEspeciales from '../classes/SimbolosEspeciales';
 
 const useStyles = makeStyles({
   grid: {
@@ -62,7 +63,8 @@ export default function App() {
           }
           nodes.push(newNode);
           edo.Trans.forEach((trans) => {
-            edges.push({ from: edo.IdEstado, to: trans.__edo__.IdEstado, label: trans.__simbInf__ === trans.__simbSup__ ? trans.__simbInf__ : `${trans.__simbInf__}-${trans.__simbSup__}` });
+            var lbl = trans.__simbInf__ === trans.__simbSup__ ? trans.__simbInf__ === SimbolosEspeciales.EPSILON ? 'ε' : trans.__simbInf__ : `${trans.__simbInf__}-${trans.__simbSup__}`;
+            edges.push({ from: edo.IdEstado, to: trans.__edo__.IdEstado, label: lbl });
           })
         })
       }
