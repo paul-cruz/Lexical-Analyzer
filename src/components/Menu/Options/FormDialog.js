@@ -77,7 +77,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     <DialogContentText>
                         Choose your file to import
                             </DialogContentText>
-                    <input type="file" accept="application/JSON" id="JSONFile" />
+                    <input type="file" accept="application/JSON, plain/text" id="JSONFile" />
                 </>
                 :
                 <>
@@ -517,7 +517,20 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const fr = new FileReader();
                     const name = document.getElementById("JSONFile").files[0].name.split(".")[0];
                     fr.onload = function () {// eslint-disable-next-line
-                        onAutomataChange({ ...automata, [name]: eval("(" + fr.result + ")") });
+                        if(name === "ascii"){
+                            let caracteres = fr.result.split("").filter(char => char !== " " && char !== "" && char !== "\n" && char !== "\r" && char !== "\uFFFD" && char !== "\u007F7" && char !== "\u007F");
+                            let edo1 = new AFN();
+                            edo1.CrearAFNBasico(caracteres[0]);
+                            caracteres.forEach((sym, index) => {
+                                if(index !== 0){
+                                    let edo2 = new AFN();
+                                    edo1.UnirAFN(edo2.CrearAFNBasico(sym));
+                                }
+                            });
+                            onAutomataChange({ ...automata, 1: edo1});
+                        } else {
+                            onAutomataChange({ ...automata, [name]: eval("(" + fr.result + ")") });
+                        }
                     }
                     fr.readAsText(document.getElementById("JSONFile").files[0]);
                 } else {
