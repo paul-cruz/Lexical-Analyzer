@@ -21,6 +21,7 @@ import AFD from '../../../classes/AFD';
 import CalculatorEval from '../../../classes/CalculatorEval';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 import Regex2NFA from '../../../classes/Regex2NFA';
+import Gramars from '../../../classes/Gramars';
 
 const useStyles = makeStyles((theme) => ({
     formInput: {
@@ -100,7 +101,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
     </DialogContent>;
 
     const forms = {
-        'AddBasic': <DialogContent>
+        'Add Basic': <DialogContent>
             <DialogContentText>
                 Enter name and symbol for a NFA
             </DialogContentText>
@@ -257,7 +258,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 {getAutomatas()}
             </Select>
         </DialogContent>,
-        'Union for lexical analyzer': <DialogContent>
+        'Union for LA': <DialogContent>
             <DialogContentText>
                 Select an NFA to apply Union for lexical analyzer
             </DialogContentText>
@@ -283,7 +284,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 label="Token"
             />
         </DialogContent>,
-        'Convert NFA to DFA': <DialogContent>
+        'NFA to DFA': <DialogContent>
             <DialogContentText>
                 Select an NFA to convert to DFA and give it a name
             </DialogContentText>
@@ -365,7 +366,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 fullWidth
             />
         </DialogContent>,
-        'Convert Regex to NFA': <DialogContent>
+        'Regex to NFA': <DialogContent>
             <DialogContentText>
                 Introduce a RegEx to convert to NFA and its name
             </DialogContentText>
@@ -384,6 +385,21 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 margin="dense"
                 id="expression"
                 label="RegEx"
+                defaultValue={symbol}
+                onChange={(e) => { setSymbol(e.target.value) }}
+                fullWidth
+            />
+        </DialogContent>,
+        'LL1 Table': <DialogContent>
+            <DialogContentText>
+                Introduce las gramáticas de la tabla LL1
+        </DialogContentText>
+            <TextField
+                className={classes.formInput}
+                autoFocus
+                margin="dense"
+                id="expression"
+                label="Gramars"
                 defaultValue={symbol}
                 onChange={(e) => { setSymbol(e.target.value) }}
                 fullWidth
@@ -430,9 +446,9 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
         }
 
         switch (keyForm) {
-            case "AddBasic":
+            case "Add Basic":
                 const newAFN = new AFN();
-                if (symbol.includes('-') && symbol.length > 1) {
+                if (symbol.includes('-') && symbol.split('-').length > 2) {
                     var range = symbol.split('-');
                     newAFN.CrearAFNBasicoParams(range[0], range[1]);
                 } else {
@@ -474,7 +490,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                 const dest = automata[NFA1];
                 onAutomataChange({ ...automata, [NFA1]: dest.opcional() });
                 break;
-            case "Union for lexical analyzer":
+            case "Union for LA":
                 if (NFA1 && symbol) {
                     if (automata["AFNLEX1"]) {
                         const dest = automata["AFNLEX1"];
@@ -490,7 +506,7 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     delete automata[NFA1];  //esta es la madre que deberia borrar el AFN 1 xd
                 }
                 break;
-            case "Convert NFA to DFA":
+            case "NFA to DFA":
                 if (NFA1 && name) {
                     const dest = automata[NFA1];
                     const newDFA = dest.ConvAFNaAFD();
@@ -517,17 +533,17 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     const fr = new FileReader();
                     const name = document.getElementById("JSONFile").files[0].name.split(".")[0];
                     fr.onload = function () {// eslint-disable-next-line
-                        if(name === "ascii"){
+                        if (name === "ascii") {
                             let caracteres = fr.result.split("").filter(char => char !== " " && char !== "" && char !== "\n" && char !== "\r" && char !== "\uFFFD" && char !== "\u007F7" && char !== "\u007F");
                             let edo1 = new AFN();
                             edo1.CrearAFNBasico(caracteres[0]);
                             caracteres.forEach((sym, index) => {
-                                if(index !== 0){
+                                if (index !== 0) {
                                     let edo2 = new AFN();
                                     edo1.UnirAFN(edo2.CrearAFNBasico(sym));
                                 }
                             });
-                            onAutomataChange({ ...automata, 1: edo1});
+                            onAutomataChange({ ...automata, 1: edo1 });
                         } else {
                             onAutomataChange({ ...automata, [name]: eval("(" + fr.result + ")") });
                         }
@@ -552,14 +568,30 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     alert(`${symbol} is a ${validation} math expression! ${result}\nSuffix notation: ${evaluator.suffixExp}`);
                 }
                 break;
-            case "Convert Regex to NFA":
+            case "Regex to NFA":
                 if (symbol && name) {
                     const regex2NFA = new Regex2NFA(symbol);
                     const valid = regex2NFA.convert();
                     if (valid)
-                        onAutomataChange({ ...automata, [name]: regex2NFA.result });
+                        onAutomataChange({ ...automata, [name.toUpperCase()]: regex2NFA.result });
                     else
                         alert("REGEX invalid!");
+                }
+                break;
+
+            case "LL1 Table":
+                if (symbol) {
+                    const gramarOfGramars = new Gramars(symbol);
+                    const valid = gramarOfGramars.initEval();
+                    gramarOfGramars.getTerminals();
+                    if (valid)
+                        alert("Check the console!");
+                    else
+                        alert("Invalid Gramars!");
+                    console.log("Rules array ", gramarOfGramars.rulesArray);
+                    gramarOfGramars.rulesArray.forEach(list => console.log("Rule array ", list.toList()));
+                    console.log("No terminals ", gramarOfGramars.noTerminals);
+                    console.log("Terminals ", gramarOfGramars.terminals);
                 }
                 break;
             default:

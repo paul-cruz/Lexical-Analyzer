@@ -1,7 +1,7 @@
 import AFN from './AFN';
 import AnalizadorLexico from './AnalizadorLexico';
 import SimbolosEspeciales from './SimbolosEspeciales';
-import { Tokens } from './Tokens';
+import { Tokens } from '../utils/Tokens';
 import { REGEX } from '../utils/REGEX';
 
 export default class Regex2NFA {

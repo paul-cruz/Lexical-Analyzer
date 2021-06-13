@@ -1,6 +1,6 @@
 import AnalizadorLexico from './AnalizadorLexico';
 import SimbolosEspeciales from './SimbolosEspeciales';
-import { Tokens } from './Tokens';
+import { Tokens } from '../utils/Tokens';
 
 export default class CalculatorEval {
 

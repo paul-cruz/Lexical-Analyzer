@@ -35,58 +35,8 @@ export default function Menu({ automata, onAutomataChange }) {
 
     const handleOption = (event, newValue) => {
         setValue(newValue);
-        switch (menuOptions[newValue].label) {
-            case "Add Basic":
-                setOpenDialog(true);
-                onChooseDialog('AddBasic');
-                break;
-            case "Join":
-                setOpenDialog(true);
-                onChooseDialog("Join");
-                break;
-            case "Concat":
-                setOpenDialog(true);
-                onChooseDialog("Concat");
-                break;
-            case "Positive Closure":
-                setOpenDialog(true);
-                onChooseDialog("Positive Closure");
-                break;
-            case "Kleene Closure":
-                onChooseDialog("Kleene Closure");
-                setOpenDialog(true);
-                break;
-            case "Once or none":
-                setOpenDialog(true);
-                onChooseDialog("Once or none");
-                break;
-            case "Union for lexical analyzer":
-                setOpenDialog(true);
-                onChooseDialog("Union for lexical analyzer");
-                break;
-            case "Convert NFA to DFA":
-                setOpenDialog(true);
-                onChooseDialog("Convert NFA to DFA");
-                break;
-            case "Analyze string":
-                setOpenDialog(true);
-                onChooseDialog("Analyze string");
-                break;
-            case "Import / Export":
-                setOpenDialog(true);
-                onChooseDialog("Import / Export");
-                break;
-            case "Calculator Eval":
-                setOpenDialog(true);
-                onChooseDialog("Calculator Eval");
-                break;
-            case "Convert Regex to NFA":
-                setOpenDialog(true);
-                onChooseDialog("Convert Regex to NFA");
-                break;
-            default:
-                break;
-        }
+        onChooseDialog(menuOptions[newValue].label);
+        setOpenDialog(true);
     }
 
     return (

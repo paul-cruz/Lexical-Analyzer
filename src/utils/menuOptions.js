@@ -10,6 +10,7 @@ import HdrStrongOutlinedIcon from '@material-ui/icons/HdrStrongOutlined';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import ExposureIcon from '@material-ui/icons/Exposure';
 import SpellcheckIcon from '@material-ui/icons/Spellcheck';
+import TableChartIcon from '@material-ui/icons/TableChart';
 
 export const menuOptions = [{
     label: 'Add Basic',
@@ -30,10 +31,10 @@ export const menuOptions = [{
     label: 'Once or none',
     icon: <PortableWifiOffOutlinedIcon />
 }, {
-    label: 'Union for lexical analyzer',
+    label: 'Union for LA',
     icon: <BlurOnOutlinedIcon />
 }, {
-    label: 'Convert NFA to DFA',
+    label: 'NFA to DFA',
     icon: <BorderVerticalOutlinedIcon />
 }, {
     label: 'Analyze string',
@@ -45,7 +46,10 @@ export const menuOptions = [{
     label: 'Calculator Eval',
     icon: <ExposureIcon />
 }, {
-    label: 'Convert Regex to NFA',
+    label: 'Regex to NFA',
     icon: <SpellcheckIcon/>
+}, {
+    label: 'LL1 Table',
+    icon: <TableChartIcon/>
 }
 ];
