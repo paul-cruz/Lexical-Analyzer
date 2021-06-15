@@ -1,0 +1,21 @@
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 1rem;
+}
+
+.TableLL1{
+  margin: 3rem;
+}
+
+.col{
+  padding: 1rem;
+  text-align: center;
+}
+
+.error{
+  color: #f44336;
+}
