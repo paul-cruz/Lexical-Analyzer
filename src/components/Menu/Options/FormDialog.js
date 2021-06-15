@@ -22,6 +22,7 @@ import CalculatorEval from '../../../classes/CalculatorEval';
 import AnalizadorLexico from '../../../classes/AnalizadorLexico';
 import Regex2NFA from '../../../classes/Regex2NFA';
 import Gramars from '../../../classes/Gramars';
+import LL1 from '../../../classes/LL1';
 
 const useStyles = makeStyles((theme) => ({
     formInput: {
@@ -590,8 +591,13 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                         alert("Invalid Gramars!");
                     console.log("Rules array ", gramarOfGramars.rulesArray);
                     gramarOfGramars.rulesArray.forEach(list => console.log("Rule array ", list.toList()));
+                    const tableLL1 = new LL1(gramarOfGramars.rulesArray, gramarOfGramars.noTerminals, gramarOfGramars.terminals);
                     console.log("No terminals ", gramarOfGramars.noTerminals);
                     console.log("Terminals ", gramarOfGramars.terminals);
+                    if (valid){
+                        gramarOfGramars.rulesArray.forEach(list => console.log("First",tableLL1.first(list)));
+                        //gramarOfGramars.noTerminals.forEach(sim => console.log("Follow",tableLL1.follow(sim)));
+                    }
                 }
                 break;
             default:
