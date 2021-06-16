@@ -30,7 +30,7 @@ export default function Menu({ automata, onAutomataChange }) {
     const [dialog, setDialog] = React.useState(null);
 
     const onChooseDialog = (key) => {
-        setDialog(<FormDialog open={openDialog || true} setDialog={setDialog} setOpen={setOpenDialog} keyForm={key} automata={automata} onAutomataChange={onAutomataChange} />);
+        setDialog(<FormDialog open={openDialog || true} setDialog={setDialog} setOpen={setOpenDialog} keyForm={key} automata={automata} onAutomataChange={onAutomataChange} onChooseDialog={onChooseDialog}/>);
     }
 
     const handleOption = (event, newValue) => {
