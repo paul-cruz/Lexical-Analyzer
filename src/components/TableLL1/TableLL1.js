@@ -67,8 +67,6 @@ const TableLL1 = (props) => {
           let columna = searchSymbolCoord(symbol, table)[1];
           table[fila][columna] = reglaString+","+(index+1);
         } else {
-          console.log(rule);
-          console.log(ll1.follow(rule[0]));
           ll1.follow(rule[0]).forEach(newSymbol => {
             let fila = searchSymbolCoord(rule[0], table)[1];
             let columna = searchSymbolCoord(newSymbol, table)[1];
