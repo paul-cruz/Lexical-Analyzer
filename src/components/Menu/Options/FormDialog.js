@@ -23,7 +23,6 @@ import AnalizadorLexico from "../../../classes/AnalizadorLexico";
 import Regex2NFA from "../../../classes/Regex2NFA";
 import Gramars from "../../../classes/Gramars";
 import TableLL1 from "../../TableLL1/TableLL1";
-import LL1 from '../../../classes/LL1';
 
 const useStyles = makeStyles((theme) => ({
   formInput: {
@@ -714,7 +713,7 @@ export default function FormDialog({
                 {forms["LL1 layout"] ? forms["LL1 layout"] : null}
                 <DialogActions>
                   <Button onClick={handleClose}>Cancel</Button>
-                  <Button onClick={handleForm}>Ok</Button>
+                  <Button onClick={handleClose}>Ok</Button>
                 </DialogActions>
               </Dialog>
             </div>
