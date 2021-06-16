@@ -23,6 +23,7 @@ import AnalizadorLexico from "../../../classes/AnalizadorLexico";
 import Regex2NFA from "../../../classes/Regex2NFA";
 import Gramars from "../../../classes/Gramars";
 import TableLL1 from "../../TableLL1/TableLL1";
+import LL1 from '../../../classes/LL1';
 
 const useStyles = makeStyles((theme) => ({
   formInput: {
@@ -693,14 +694,6 @@ export default function FormDialog({
           gramarOfGramars.getTerminals();
           if (valid) alert("Check the console!");
           else alert("Invalid Gramars!");
-
-          console.log("Rules array ", gramarOfGramars.rulesArray);
-          gramarOfGramars.rulesArray.forEach((list) =>
-            console.log("Rule array ", list.toList())
-          );
-          console.log("No terminals ", gramarOfGramars.noTerminals);
-          console.log("Terminals ", gramarOfGramars.terminals);
-
           forms["LL1 layout"] = (
             <TableLL1
               terminals={Array.from(gramarOfGramars.terminals.add("$"))}
