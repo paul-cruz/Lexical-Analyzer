@@ -5,7 +5,7 @@ import "./index.css";
 const TableLL1 = (props) => {
   const { terminals, noTerminals } = props;
   const [tableMatrix, setTableMatrix] = useState([[]]);
-
+  console.log(props)
   useEffect(() => {
     let table = Array.from(
       Array(terminals.length + noTerminals.length + 1),
@@ -39,7 +39,6 @@ const TableLL1 = (props) => {
 
   return (
     <table className="TableLL1">
-      {console.table(tableMatrix)}
       <thead>
         <tr className="col">
           {tableMatrix[0].map((symbol, index) => (
@@ -62,6 +61,8 @@ const TableLL1 = (props) => {
                 ))}
               </tr>
             );
+          } else {
+            return null;
           }
         })}
       </tbody>
