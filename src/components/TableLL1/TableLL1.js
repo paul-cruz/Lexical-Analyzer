@@ -6,11 +6,11 @@ import LL1 from "../../classes/LL1";
 const TableLL1 = (props) => {
   const { terminals, noTerminals, rulesList } = props;
   const [tableMatrix, setTableMatrix] = useState([[]]);
-  console.log(props);
+  const [termilesNuevo, setTerminalesNuevo] = useState(terminals.filter(item => item !== "EPSILON"));
   function initEmptyTable(){
     let table = Array.from(
-      Array(terminals.length + noTerminals.length + 1),
-      () => new Array(terminals.length + 1)
+      Array(termilesNuevo.length + noTerminals.length + 1 ),
+      () => new Array(termilesNuevo.length + 1)
     );
     let row = noTerminals.length + 1;
     let col = 1;
@@ -21,16 +21,16 @@ const TableLL1 = (props) => {
       }
     }
 
-    terminals.forEach((symbol, index) => {
+    termilesNuevo.forEach((symbol, index) => {
       table[0][index + 1] = symbol;
     });
 
-    noTerminals.concat(terminals).forEach((symbol, index) => {
+    noTerminals.concat(termilesNuevo).forEach((symbol, index) => {
       table[index + 1][0] = symbol;
     });
 
-    for (let index = 0; index < terminals.length; index++) {
-      table[row][col] = index + 1 < terminals.length ? "POP" : "ACCEPT";
+    for (let index = 0; index < termilesNuevo.length; index++) {
+      table[row][col] = index + 1 < termilesNuevo.length ? "POP" : "ACCEPT";
       row += 1;
       col += 1;
     }
@@ -39,7 +39,7 @@ const TableLL1 = (props) => {
 
   function searchSymbolCoord(symbol, table){
       //Searching for non terminal symbols in rows
-    for(let row = 1 ; row < table.length - terminals.length ; row++){
+    for(let row = 1 ; row < table.length - termilesNuevo.length ; row++){
       if(table[row][0] === symbol){
         return ["row", row];
       }
@@ -56,12 +56,26 @@ const TableLL1 = (props) => {
   }
 
   function initDataTable(table){
-    let ll1 = new LL1(rulesList, noTerminals, terminals);
-    rulesList.forEach(rule => {
+    let ll1 = props.ll1;
+    rulesList.forEach((rule, index) => {
       rule = rule.toList();
-      console.log(rule.slice(1).join(""));
+      let reglaString = rule.slice(1).join("");
       //First
-
+      ll1.first(rule, 1).forEach(symbol => {
+        if(symbol !== "EPSILON"){
+          let fila = searchSymbolCoord(rule[0], table)[1];
+          let columna = searchSymbolCoord(symbol, table)[1];
+          table[fila][columna] = reglaString+","+(index+1);
+        } else {
+          console.log(rule);
+          console.log(ll1.follow(rule[0]));
+          ll1.follow(rule[0]).forEach(newSymbol => {
+            let fila = searchSymbolCoord(rule[0], table)[1];
+            let columna = searchSymbolCoord(newSymbol, table)[1];
+            table[fila][columna] = reglaString+","+(index+1);
+          });
+        }
+      });
       let firstSet = new Set();
       if(firstSet.has("EPSILON")){
         //Follow
@@ -72,7 +86,7 @@ const TableLL1 = (props) => {
   }
 
   useEffect(() => { 
-    
+    setTerminalesNuevo(terminals.filter(item => item !== "EPSILON"));
     let table = initEmptyTable();
     table = initDataTable(table);
     setTableMatrix(table);
