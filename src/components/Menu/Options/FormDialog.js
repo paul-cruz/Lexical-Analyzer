@@ -595,8 +595,8 @@ export default function FormDialog({ keyForm, automata, onAutomataChange, open, 
                     console.log("No terminals ", gramarOfGramars.noTerminals);
                     console.log("Terminals ", gramarOfGramars.terminals);
                     if (valid){
-                        gramarOfGramars.rulesArray.forEach(list => console.log("First",tableLL1.first(list)));
-                        //gramarOfGramars.noTerminals.forEach(sim => console.log("Follow",tableLL1.follow(sim)));
+                        gramarOfGramars.rulesArray.forEach(list => console.log("First: " + list.toList()[0],tableLL1.first(list.toList(), 0)));
+                        gramarOfGramars.noTerminals.forEach(sim => console.log("Follow: "+sim,tableLL1.follow(sim)));
                     }
                 }
                 break;
