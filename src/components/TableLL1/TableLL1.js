@@ -4,8 +4,9 @@ import "./index.css";
 import LL1 from "../../classes/LL1";
 
 const TableLL1 = (props) => {
-  const { terminals, noTerminals, rulesList } = props;
+  const { terminals, noTerminals, rulesList, cadena } = props;
   const [tableMatrix, setTableMatrix] = useState([[]]);
+  console.log(props);
   const [termilesNuevo, setTerminalesNuevo] = useState(terminals.filter(item => item !== "EPSILON"));
   function initEmptyTable(){
     let table = Array.from(

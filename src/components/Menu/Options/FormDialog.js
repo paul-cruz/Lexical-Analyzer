@@ -489,6 +489,19 @@ export default function FormDialog({
           }}
           fullWidth
         />
+
+        <TextField
+          className={classes.formInput}
+          autoFocus
+          margin="dense"
+          id="cadena"
+          label="String to eval"
+          defaultValue={NFA1}
+          onChange={(e) => {
+            setNFA1(e.target.value);
+          }}
+          fullWidth
+        />
       </DialogContent>
     ),
     "LL1 layout": <div></div>,
@@ -701,6 +714,7 @@ export default function FormDialog({
               noTerminals={Array.from(gramarOfGramars.noTerminals)}
               rulesList={gramarOfGramars.rulesArray}
               ll1={new LL1(gramarOfGramars.rulesArray, gramarOfGramars.noTerminals, gramarOfGramars.terminals)}
+              cadena={NFA1}
             />
           );
           onChooseDialog("LL1 layout");
