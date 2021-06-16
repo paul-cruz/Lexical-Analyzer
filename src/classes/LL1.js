@@ -59,10 +59,6 @@ export default class LL1{
         });
         if(simbIni === simb){
             followSet.add("$");
-        }else{
-            if(followSet.has("$")){
-                followSet.delete("$");
-            }
         }
         return followSet;
     }
