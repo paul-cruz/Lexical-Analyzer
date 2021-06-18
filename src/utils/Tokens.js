@@ -15,5 +15,4 @@ export const Tokens = {
     SQB_R: 140,
     DASH: 150,
     SYMBOL: 160
-    
 }

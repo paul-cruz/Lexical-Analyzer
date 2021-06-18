@@ -489,6 +489,21 @@ export default function FormDialog({
           }}
           fullWidth
         />
+        <InputLabel id="demo-simple-select-label">Select NFA</InputLabel>
+        <Select
+          className={classes.formInput}
+          margin="dense"
+          id="AFN2"
+          fullWidth
+          label="Select "
+          defaultValue={NFA2 ? NFA2 : ""}
+          onChange={(e) => setNFA2(e.target.value)}
+        >
+          <MenuItem value={null} disabled>
+            Select
+          </MenuItem>
+          {getDFAs()}
+        </Select>
 
         <TextField
           className={classes.formInput}
@@ -715,6 +730,7 @@ export default function FormDialog({
               rulesList={gramarOfGramars.rulesArray}
               ll1={new LL1(gramarOfGramars.rulesArray, gramarOfGramars.noTerminals, gramarOfGramars.terminals)}
               cadena={NFA1}
+              AFD={automata[NFA2]}
             />
           );
           onChooseDialog("LL1 layout");
